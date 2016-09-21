@@ -2,24 +2,43 @@
 <body>
   <?php ?>
     <?php
-
-    $db = 'tutorial';
+    $db = 'UserDB';
     $conn = mysqli_connect("localhost:8889", "root", "root");
 // Check connection
     if (!$conn) {
       die("Connection failed: " . mysqli_connect_error());
     }
 
-
-
     mysqli_select_db($conn, $db);
-    $sql = "INSERT INTO Names (Word) VALUES (4)";
-    if (mysqli_query($conn, $sql)) {
-      echo "Sexy bitch worked";
-    } else {
-      echo "wat heck, boi, ill do ya a slither: " . mysqli_error($conn);
+
+    if(isset($_POST['login'])) {
+      $username = mysqli_real_escape_string($conn, $_POST['user']);
+      $pass = mysqli_real_escape_string($conn, $_POST['pass']);
+      $sel_user = "SELECT * FROM users WHERE user_id='$username' AND user_pass='$pass'";
+      $run_user = mysqli_query($conn, $sel_user);
+      $check_user = mysqli_num_rows($run_user);
+
+      if($check_user > 0) {
+        $_SESSION['user_email'] = $email;
+        echo "USER FOUND"
+      }
+
+      else {
+        echo "<script>alert('Email or password is not correct, try again')</script>";
+      }
+
+
     }
 
+
+
+    /*$sql = "INSERT INTO users (user_id,user_password) VALUES ('$user','$password')";
+    if (mysqli_query($conn, $sql)) {
+      echo "it worked";
+    } else {
+      echo "did not work. error: " . mysqli_error($conn);
+    }
+    */
     mysqli_close($conn);
 
 
