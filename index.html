@@ -10,7 +10,7 @@
     <p>A parking-space sharing service.</p>
     <p>This year, the parking lot rules at Maine South changed so that specific spots are reserved for the entire year. But, nobody users his/her spot every day--there are days when a substantial portion of the parking lot sits empty. This is an inefficient system, and an unfair system for those who were not able to get a parking pass.</p>
     <p>Our idea is for a park-share program, in which the owners of parking spaces can “rent” them out for the day if they don’t plan to use it. </p>
-    <form action="action_page.php">
+    <form action="action_page.php" method="post">
       <table width="500" align="center">
         <tr align="right">
           <td colspan=”3″>
@@ -18,20 +18,20 @@
           </td>
         </tr>
         <tr>
-          <td align=”right”>
+          <td align="right">
             <b>Username:</b>
           </td>
           <td>
-            <input type=”text” name=”user” required="required">
+            <input type="text" name="user" required="required">
           </td>
         </tr>
         <tr>
-          <td align=”right”><b>Password:</b></td>
-          <td><input type=”password” name=”pass” required="required"></td>
+          <td align="right"><b>Password:</b></td>
+          <td><input type="password" name="pass" required="required"></td>
         </tr>
         <tr>
-          <td colspan=”3″ align="center">
-            <input type="submit" value="Submit">
+          <td colspan="3" align="center">
+            <input type="submit" name="login" value="Submit">
           </td>
         </tr>
       </table>

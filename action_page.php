@@ -12,23 +12,27 @@
     mysqli_select_db($conn, $db);
 
     if(isset($_POST['login'])) {
-      $username = mysqli_real_escape_string($conn, $_POST['user']);
-      $pass = mysqli_real_escape_string($conn, $_POST['pass']);
-      $sel_user = "SELECT * FROM users WHERE user_id='$username' AND user_pass='$pass'";
+
+      $username = $_POST['user'];
+      $pass = $_POST['pass'];
+      $sel_user = "SELECT * FROM users WHERE user_id='$username' AND user_password='$pass'";
       $run_user = mysqli_query($conn, $sel_user);
+      //$check_user = mysqli_num_rows($run_user);
+
       $check_user = mysqli_num_rows($run_user);
 
+      printf("Result set has %d rows.\n", $check_user);
+
       if($check_user > 0) {
-        $_SESSION['user_email'] = $email;
-        echo "USER FOUND"
+        $_SESSION['user_id'] = $username;
+        echo 'USER FOUND';
       }
-
       else {
-        echo "<script>alert('Email or password is not correct, try again')</script>";
+        echo "no";
+        //echo "<script>alert('Email or password is not correct, try again')</script>";
       }
 
-
-    }
+    } else { echo 'this didnt ran';}
 
 
 
