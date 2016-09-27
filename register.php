@@ -48,7 +48,7 @@
         echo "<script>alert('Passwords are not the same')</script>";
         header('Location: register.php');
       }
-      $sel_user = "SELECT * FROM users WHERE user_id='$username'";
+      $sel_user = "SELECT * FROM users WHERE username='$username'";
       $run_user = mysqli_query($conn, $sel_user);
 
       $check_user = mysqli_num_rows($run_user);
@@ -56,11 +56,12 @@
       printf("Result set has %d rows.\n", $check_user);
 
       if($check_user == 0) {
-
-        echo 'USER FOUND';
+        $new_user = "INSERT INTO users(username, pass) VALUES('$username', '$pass')";
+        $create_user = mysqli_query($conn, $new_user);
+        echo "<script>alert('User was successfully created')</script>";
       }
       else {
-        echo "<script>alert('Email or password is not correct, try again')</script>";
+        echo "<script>alert('E is already taken, try again')</script>";
       }
 
     } else { echo 'this one';}
