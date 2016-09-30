@@ -1,10 +1,16 @@
+
+<html>
+<body>
+<p>fgfds</p>
+</body>
+</html>
+
 <?php
 
-if(!session_id()){
-  session_start();
-}
-if(!$_SESSION['logon']){
-  header("Location:index.php");
-}
+#session_start();
+
+#if(!$_SESSION['logon']){
+#  header("Location:index.php");
+#}
 
 ?>

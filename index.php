@@ -64,13 +64,19 @@
           printf("Result set has %d rows.\n", $check_user);
 
           if($check_user > 0) {
-            $_SESSION['username'] = $username;
+            #$_SESSION['username'] = $username;
+            echo "eyeyeyeyeye";
+            echo session_id();
+            header("Location: admin.php");
             if(isset($username) && isset($password)){
+
               if(!session_id()){
+                echo 'wassaas';
                 session_start();
+                $_SESSION['logon'] = true;
+                header('Location: admin.php');
               }
-              $_SESSION['logon'] = true;
-              header('Location:admin.php');
+
             }
             echo 'USER FOUND';
 
