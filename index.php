@@ -55,37 +55,40 @@
 
           $username = $_POST['user'];
           $pass = $_POST['pass'];
-          $sel_user = "SELECT * FROM users WHERE username='$username' AND pass='$pass'";
+          $sel_user = "SELECT * FROM users WHERE username='$username'";
           $run_user = mysqli_query($conn, $sel_user);
-          //$check_user = mysqli_num_rows($run_user);
-
           $check_user = mysqli_num_rows($run_user);
 
-          printf("Result set has %d rows.\n", $check_user);
+      #    printf("Result set has %d rows.\n", $check_user);
 
           if($check_user > 0) {
-            #$_SESSION['username'] = $username;
-            echo "eyeyeyeyeye";
-            echo session_id();
-            header("Location: admin.php");
-            if(isset($username) && isset($password)){
+            $row = mysqli_fetch_assoc($run_user);
+            $pw = $row['pass'];
+            
+            if(password_verify($pass, $pw)) {
 
-              if(!session_id()){
-                echo 'wassaas';
-                session_start();
-                $_SESSION['logon'] = true;
-                header('Location: admin.php');
-              }
+              session_start();
 
-            }
-            echo 'USER FOUND';
+              $_SESSION['username'] = $username;
+        #    echo "eyeyeyeyeye";
+        #    echo session_id();
+              #header("Location: admin.php");
+            #if(isset($username) && isset($password)){
+        #      echo 'wassaas';
+              $_SESSION['logon'] = true;
+        #      echo $_SESSION['logon'];
+              #header('location: admin.php');
+          #  }
+        #    echo 'USER FOUND';
 
           }
           else {
             echo "<script>alert('Email or password is not correct, try again')</script>";
           }
+        }
 
-        } else { echo 'this didnt ran';}
+
+        }
 
 
 

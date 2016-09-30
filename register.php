@@ -43,11 +43,14 @@
 
       $username = $_POST['user'];
       $pass = $_POST['pass'];
+
       $pass_check = $_POST['pass_check'];
       if($pass != $pass_check) {
         echo "<script>alert('Passwords are not the same')</script>";
         header('Location: register.php');
       }
+      $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
+
       $sel_user = "SELECT * FROM users WHERE username='$username'";
       $run_user = mysqli_query($conn, $sel_user);
 
@@ -56,7 +59,7 @@
       printf("Result set has %d rows.\n", $check_user);
 
       if($check_user == 0) {
-        $new_user = "INSERT INTO users(username, pass) VALUES('$username', '$pass')";
+        $new_user = "INSERT INTO users(username, pass) VALUES('$username', '$hashAndSalt')";
         $create_user = mysqli_query($conn, $new_user);
         echo "<script>alert('User was successfully created')</script>";
       }
