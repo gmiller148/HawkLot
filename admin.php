@@ -1,10 +1,10 @@
-<?php if($_SESSION['logon']!=4) {
+<?php
   session_start();
-  header("refresh:3; url=index.php");
-  echo "PLEASE LOG ON."."\n";
-  echo $_SESSION['logon']. "\n";
-  echo session_id();
-  echo $_SESSION['username']. "\n";
+  echo $_SESSION['logon'];
+  if($_SESSION['logon']!="admin") {
+  header("refresh:0.01; url=index.php");
+  echo "PTFO OR GTFO";
+  echo $_SESSION['username'];
   exit;
 }
 ?>
@@ -13,9 +13,13 @@
 <html>
 <body>
   <p>Redirecting you in 3 seconds...</p>
-<?php if($_SESSION['logon']==4) : ?>
-  <p>This is a hidden element</p>
-  <?php echo $_SESSION['username']; ?>
+<?php if($_SESSION['logon']=="admin") : ?>
+  <?php echo "Hello user: ".$_SESSION['username']; ?>
+  <form action="logout.php" method="post">
+    <input type="submit" name="logout" value="Logout">
+  </form>
 <?php endif; ?>
 </body>
 </html>
+
+<?php session_destroy(); ?>

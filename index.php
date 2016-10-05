@@ -63,7 +63,7 @@
             if(password_verify($pass, $pw)) {
               session_start();
               $_SESSION['username'] = $username;
-              $_SESSION['logon'] = 4;
+              $_SESSION['logon'] = "admin";
             }else {
             echo "<script>alert('Email or password is not correct, try again')</script>";
             }
@@ -73,9 +73,7 @@
         ?>
     </form>
     <?php if($_SESSION['logon']) : ?>
-      <?php echo session_id(); ?>
-      <meta http-equiv="refresh" content="2;url=admin.php">
+      <meta http-equiv="refresh" content="0;url=admin.php">
     <?php endif; ?>
-
 </body>
 </html>

@@ -70,7 +70,6 @@
     } else { echo 'this one';}
 
     mysqli_close($conn);
-
     ?>
 
   </form>
