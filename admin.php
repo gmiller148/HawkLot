@@ -1,21 +1,26 @@
 <?php
   session_start();
-  echo $_SESSION['logon'];
   if($_SESSION['logon']!="admin") {
-  header("refresh:0; url=index.php");
-  echo "USER IS NOT LOGGED ON";
-  echo $_SESSION['username'];
+    header("refresh:0; url=index.php");
+    echo "USER IS NOT LOGGED ON";
   exit;
 }
 ?>
 
-
 <html>
-<body>
+<head>
+  <title>Admin Page</title>
+</head>
+<body style="background-color:cyan;">
 <?php if($_SESSION['logon']=="admin") : ?>
-  <?php echo "Hello user: ".$_SESSION['username']; ?>
+  <?php
+    include "header.php";
+    echo "Hello user: ".$_SESSION['username'];
+    echo $_SESSION['logon'];
+    echo $_SESSION['reroute'];
+    unset($_SESSION['reroute']);
+  ?>
   <form action="reroute.php" method="post">
-    <?php $_SESSION['reroute'] = "index.php"; ?>
     <input type="submit" name="logout" value="Logout">
     <?php exit; ?>
   </form>

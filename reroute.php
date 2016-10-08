@@ -9,9 +9,15 @@ if(isset($_SESSION['reroute'])){
 }
 else{
   echo "index.php";
+  if (isset($_GET['logout'])) {
+    unset($_SESSION['logon']);
+    unset($_SESSION['username']);
+    $_SESSION['logged_on_visiting'] = false;
+    session_destroy();
+  }
   echo '<meta http-equiv="refresh" content="0;url=index.php">';
+  exit;
 }
-session_destroy();
 ?>
 
 </body>

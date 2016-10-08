@@ -1,41 +1,6 @@
 <html>
-<head>
-  <link rel="stylesheet" type="text/css" href="stylesheet.css">
-</head>
 <body style="background-color:cyan;">
-
-  <ul>
-    <li><a class="active" href="index.php">Home</a></li>
-    <li><a href="register.php">Register</a></li>
-    <li class="dropdown">
-      <a href="javascript:void(0)" class="dropbtn" onclick="myFunction()">More</a>
-      <div class="dropdown-content" id="myDropdown">
-        <a href="index.php">About Us</a>
-        <a href="index.php">Our Story</a>
-      </div>
-    </li>
-  </ul>
-
-  <script>
-
-  function myFunction() {
-      document.getElementById("myDropdown").classList.toggle("show");
-  }
-
-  window.onclick = function(e) {
-    if (!e.target.matches('.dropbtn')) {
-
-      var dropdowns = document.getElementsByClassName("dropdown-content");
-      for (var d = 0; d < dropdowns.length; d++) {
-        var openDropdown = dropdowns[d];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-        }
-      }
-    }
-  }
-  </script>
-
+  <?php include "header.php"; ?>
   <form action="register.php" method=POST>
     <table width="500" align="center">
       <tr align="right">
