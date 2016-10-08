@@ -1,5 +1,41 @@
 <html>
-<body>
+<head>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body style="background-color:cyan;">
+
+  <ul>
+    <li><a class="active" href="index.php">Home</a></li>
+    <li><a href="register.php">Register</a></li>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn" onclick="myFunction()">More</a>
+      <div class="dropdown-content" id="myDropdown">
+        <a href="index.php">About Us</a>
+        <a href="index.php">Our Story</a>
+      </div>
+    </li>
+  </ul>
+
+  <script>
+
+  function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  window.onclick = function(e) {
+    if (!e.target.matches('.dropbtn')) {
+
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var d = 0; d < dropdowns.length; d++) {
+        var openDropdown = dropdowns[d];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+  </script>
+
   <form action="register.php" method=POST>
     <table width="500" align="center">
       <tr align="right">
@@ -41,13 +77,14 @@
 
     if(isset($_POST['register'])) {
 
-      $username = $_POST['user'];
-      $pass = $_POST['pass'];
+      $username = mysqli_real_escape_string($conn,$_POST['user']);
+      $pass = mysqli_real_escape_string($conn,$_POST['pass']);
 
       $pass_check = $_POST['pass_check'];
       if($pass != $pass_check) {
         echo "<script>alert('Passwords are not the same')</script>";
-        header('Location: register.php');
+        mysqli_close($conn);
+        exit;
       }
       $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
 
@@ -56,19 +93,18 @@
 
       $check_user = mysqli_num_rows($run_user);
 
-      printf("Result set has %d rows.\n", $check_user);
-
       if($check_user == 0) {
         $new_user = "INSERT INTO users(username, pass) VALUES('$username', '$hashAndSalt')";
         $create_user = mysqli_query($conn, $new_user);
         echo "<script>alert('User was successfully created')</script>";
+        mysqli_close($conn);
+        echo '<meta http-equiv="refresh" content="0;url=index.php">';
+        exit;
       }
       else {
-        echo "<script>alert('E is already taken, try again')</script>";
+        echo "<script>alert('$username is already taken, try again')</script>";
       }
-
-    } else { echo 'this one';}
-
+    }
     mysqli_close($conn);
     ?>
 

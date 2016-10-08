@@ -3,14 +3,52 @@
 <head>
     <meta charset="utf-8" />
     <title>HawkLot</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
 </head>
 <body style="background-color:cyan;">
-    <h1>HawkLot</h1>
-    <p>A parking-space sharing service.</p>
-    <p>This year, the parking lot rules at Maine South changed so that specific spots are reserved for the entire year. But, nobody users his/her spot every day--there are days when a substantial portion of the parking lot sits empty. This is an inefficient system, and an unfair system for those who were not able to get a parking pass.</p>
-    <p>Our idea is for a park-share program, in which the owners of parking spaces can “rent” them out for the day if they don’t plan to use it. </p>
-    <form action="index.php" method="post">
-      <table width="500" align="center">
+  <ul>
+    <li><a class="active" href="index.php">Home</a></li>
+    <li><a href="register.php">Register</a></li>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn" onclick="myFunction()">More</a>
+      <div class="dropdown-content" id="myDropdown">
+        <a href="aboutus.php">About Us</a>
+        <a href="ourstory.php">Our Story</a>
+      </div>
+    </li>
+  </ul>
+
+  <h1>HawkLot</h1>
+  <p>A parking-space sharing service.</p>
+  <p>This year, the parking lot rules at Maine South changed so that specific spots are reserved for the entire year. But, nobody users his/her spot every day--there are days when a substantial portion of the parking lot sits empty. This is an inefficient system, and an unfair system for those who were not able to get a parking pass.</p>
+  <p>Our idea is for a park-share program, in which the owners of parking spaces can “rent” them out for the day if they don’t plan to use it. </p>
+
+  <script>
+  /* When the user clicks on the button,
+  toggle between hiding and showing the dropdown content */
+  function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(e) {
+    if (!e.target.matches('.dropbtn')) {
+
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var d = 0; d < dropdowns.length; d++) {
+        var openDropdown = dropdowns[d];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+  </script>
+
+
+    <form action="index.php" method="post" class="login_form">
+      <table width="500" align="center" >
         <tr align="right">
           <td colspan=”3″>
             <h2>User Login</h2>
@@ -33,10 +71,6 @@
             <input type="submit" name="login" value="Submit">
           </td>
         </tr>
-        <tr>
-          <td align="center">
-            <a href="register.php">Register Now</a>
-        </tr>
       </table>
       <?php ?>
         <?php
@@ -50,8 +84,8 @@
 
         if(isset($_POST['login'])) {
 
-          $username = $_POST['user'];
-          $pass = $_POST['pass'];
+          $username = mysqli_real_escape_string($conn,$_POST['user']);
+          $pass = mysqli_real_escape_string($conn,$_POST['pass']);
           $sel_user = "SELECT * FROM users WHERE username='$username'";
           $run_user = mysqli_query($conn, $sel_user);
           $check_user = mysqli_num_rows($run_user);
@@ -75,5 +109,6 @@
     <?php if($_SESSION['logon']) : ?>
       <meta http-equiv="refresh" content="0;url=admin.php">
     <?php endif; ?>
+
 </body>
 </html>

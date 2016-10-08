@@ -2,8 +2,8 @@
   session_start();
   echo $_SESSION['logon'];
   if($_SESSION['logon']!="admin") {
-  header("refresh:0.01; url=index.php");
-  echo "PTFO OR GTFO";
+  header("refresh:0; url=index.php");
+  echo "USER IS NOT LOGGED ON";
   echo $_SESSION['username'];
   exit;
 }
@@ -12,11 +12,12 @@
 
 <html>
 <body>
-  <p>Redirecting you in 3 seconds...</p>
 <?php if($_SESSION['logon']=="admin") : ?>
   <?php echo "Hello user: ".$_SESSION['username']; ?>
-  <form action="logout.php" method="post">
+  <form action="reroute.php" method="post">
+    <?php $_SESSION['reroute'] = "index.php"; ?>
     <input type="submit" name="logout" value="Logout">
+    <?php exit; ?>
   </form>
 <?php endif; ?>
 </body>
