@@ -12,7 +12,7 @@ else{
   if (isset($_GET['logout'])) {
     unset($_SESSION['logon']);
     unset($_SESSION['username']);
-    $_SESSION['logged_on_visiting'] = false;
+    unset($_SESSION['logged_on_visiting']);
     session_destroy();
   }
   echo '<meta http-equiv="refresh" content="0;url=index.php">';

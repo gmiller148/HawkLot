@@ -1,3 +1,4 @@
+
 <html>
 <body style="background-color:cyan;">
   <?php include "header.php"; ?>
@@ -5,7 +6,7 @@
     <table width="500" align="center">
       <tr align="right">
         <td colspan=”3″>
-          <h2>User Login</h2>
+          <h2>User Register</h2>
         </td>
       </tr>
       <tr>
@@ -37,33 +38,25 @@
     </table>
 
     <?
-
     $db = 'UserDB';
     $conn = mysqli_connect("localhost:8889", "root", "root");
 // Check connection
     if (!$conn) {
       die("Connection failed: " . mysqli_connect_error());
     }
-
     mysqli_select_db($conn, $db);
-
     if(isset($_POST['register'])) {
-
       $username = mysqli_real_escape_string($conn,$_POST['user']);
       $pass = mysqli_real_escape_string($conn,$_POST['pass']);
       $pass_check = $_POST['pass_check'];
-
       if($pass != $pass_check) {
         echo "<script>alert('Passwords are not the same')</script>";
         mysqli_close($conn);
         exit;
       }
-
       $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
-
       $sel_user = "SELECT * FROM users WHERE username='$username'";
       $run_user = mysqli_query($conn, $sel_user);
-
       $check_user = mysqli_num_rows($run_user);
       $level_of_access = $_POST['access'];
       $priv = -1;
@@ -72,7 +65,6 @@
       } else if($level_of_access == 'owner') {
         $priv = 2;
       }
-
       //1 = renter :: 2 = owner :: 3 = admin
       if($check_user == 0) {
         $new_user = "INSERT INTO users(username, pass, privelege) VALUES('$username', '$hashAndSalt', '$priv')";
@@ -82,9 +74,7 @@
         echo '<meta http-equiv="refresh" content="0;url=index.php">';
         exit;
       }
-
       //COMMENT TEST
-
       else {
         echo "<script>alert('$username is already taken, try again')</script>";
       }

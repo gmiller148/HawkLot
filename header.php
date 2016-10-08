@@ -7,8 +7,10 @@
 <body>
   <ul>
   <li><a class="active" href="index.php">Home</a></li>
+  <?php if($_SESSION['logon']<1) : ?>
   <li><a href="register.php">Register</a></li>
-  <?php if($_SESSION['logon']=="admin") : ?>
+  <?php endif; ?>
+  <?php if($_SESSION['logon']>=3) : ?>
     <li><a href="admin.php">Admin Access</a></li>
     <li><a href="user.php">User Access</a></li>
   <?php endif; ?>
@@ -19,7 +21,7 @@
       <a href="ourstory.php">Our Story</a>
     </div>
   </li>
-  <?php if($_SESSION['logon']=="admin") : ?>
+  <?php if($_SESSION['logon']>=1) : ?>
     <li><a href="reroute.php?logout=true">Logout</a></li>
   <?php endif; ?>
   </ul>
