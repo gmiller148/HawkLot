@@ -82,6 +82,9 @@
         echo '<meta http-equiv="refresh" content="0;url=index.php">';
         exit;
       }
+
+      //COMMENT TEST
+
       else {
         echo "<script>alert('$username is already taken, try again')</script>";
       }
