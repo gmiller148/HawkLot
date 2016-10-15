@@ -1,5 +1,8 @@
 
 <html>
+<head>
+  <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+</head>
 <body style="background-color:cyan;">
   <?php include "header.php"; ?>
   <form action="register.php" method=POST>
@@ -25,8 +28,14 @@
       </tr>
       <tr>
         <td colspan="3" align="left">
-          <input type="radio" name="access" value="renter" checked> I want to rent parking spots.<br>
-          <input type="radio" name="access" value="owner"> I own a parking spot. <br>
+          <div class="btn-group btn-group-vertical" datatoggle="buttons">
+            <label class="btn btn-primary active">
+              <input type="radio" autocomplete="off" name="access" value="renter" checked><span>I want to rent parking spots.</span>
+            </label>
+            <label class="btn">
+              <input type="radio" autocomplete="off" name="access" value="renter"><span>I own a parking spot.</span>
+            </label>
+          </div>
         </td>
       </tr>
       <tr>
@@ -78,6 +87,7 @@
       else {
         echo "<script>alert('$username is already taken, try again')</script>";
       }
+
     }
     mysqli_close($conn);
     ?>
