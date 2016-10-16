@@ -1,11 +1,5 @@
 <?php
-$db = 'UserDB';
-$conn = mysqli_connect("localhost:8889", "root", "root");
-// Check connection
-if (!$conn) {
-  die("Connection failed: " . mysqli_connect_error());
-}
-mysqli_select_db($conn, $db);
+include("dbconnect.php");
 $createTable = "CREATE TABLE IF NOT EXISTS users (
   id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
    username text NOT NULL,

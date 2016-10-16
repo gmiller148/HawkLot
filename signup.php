@@ -4,7 +4,6 @@
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
       <br>
-      <!-- Nav tabs -->
       <div class="text-center">
         <div class="btn-group">
           <a href="#new" role="tab" data-toggle="tab" class="big btn btn-primary"><i class="fa fa-plus"></i> New User</a>

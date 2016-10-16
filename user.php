@@ -3,8 +3,9 @@
   if($_SESSION['logon']<1) {
     header("refresh:0; url=index.php");
     echo "USER IS NOT LOGGED ON";
-  exit;
-}
+    session_destroy();
+    exit;
+  }
 ?>
 
 <html>
