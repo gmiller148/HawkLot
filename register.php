@@ -3,7 +3,7 @@
 <head>
   <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
 </head>
-<body style="background-color:cyan;">
+<body>
   <?php include "header.php"; ?>
   <form action="register.php" method=POST>
     <table width="500" align="center">
@@ -17,7 +17,7 @@
           <b>Username:</b>
         </td>
         <td>
-          <input type="text" name="user" required="required">
+          <input type="email" name="user" required="required">
         </td>
       </tr>
       <tr>
@@ -46,20 +46,14 @@
 
     </table>
 
-    <?
-    $db = 'UserDB';
-    $conn = mysqli_connect("localhost:8889", "root", "root");
-// Check connection
-    if (!$conn) {
-      die("Connection failed: " . mysqli_connect_error());
-    }
-    mysqli_select_db($conn, $db);
+    <?php
+    include("dbconnect.php");
+
     if(isset($_POST['register'])) {
       $username = mysqli_real_escape_string($conn,$_POST['user']);
       $pass = mysqli_real_escape_string($conn,$_POST['pass']);
       $pass_check = $_POST['pass_check'];
       if($pass != $pass_check) {
-        echo "<script>alert('Passwords are not the same')</script>";
         mysqli_close($conn);
         exit;
       }
@@ -74,20 +68,17 @@
       } else if($level_of_access == 'owner') {
         $priv = 2;
       }
-      //1 = renter :: 2 = owner :: 3 = admin
       if($check_user == 0) {
         $new_user = "INSERT INTO users(username, pass, privelege) VALUES('$username', '$hashAndSalt', '$priv')";
         $create_user = mysqli_query($conn, $new_user);
-        echo "<script>alert('User was successfully created')</script>";
         mysqli_close($conn);
+        echo "<script>alert('User was successfully created')</script>";
         echo '<meta http-equiv="refresh" content="0;url=index.php">';
         exit;
       }
-      //COMMENT TEST
       else {
         echo "<script>alert('$username is already taken, try again')</script>";
       }
-
     }
     mysqli_close($conn);
     ?>
