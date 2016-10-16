@@ -27,7 +27,6 @@
         $usr_privlg = mysqli_query($conn, $usr_privlg_query);
         $row = mysqli_fetch_assoc($usr_privlg);
         $_SESSION['logon'] = $row['privelege'];
-        $_SESSION['logged_on_visiting'] = false;
       }else {
         echo "<script>alert('Email or password is not correct, try again')</script>";
       }
