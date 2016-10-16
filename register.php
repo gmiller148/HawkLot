@@ -15,6 +15,7 @@
      border-radius: 3px;
      border: 1px solid #D1D3D4;
      font-weight: normal;
+     background-color: white;
     }
 
     .funkyradio input[type="radio"]:empty,
