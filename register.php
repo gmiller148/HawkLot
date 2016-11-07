@@ -1,12 +1,7 @@
 <html>
 <head>
-  <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <style>
-  @import('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.0/css/bootstrap.min.css')
-    .funkyradio div {
-     clear: both;
-     overflow: hidden;
-    }
+
     .funkyradio label {
      width: 100%;
      border-radius: 3px;
@@ -157,7 +152,9 @@
       $sel_user = "SELECT * FROM users WHERE username='$username'";
       $run_user = mysqli_query($conn, $sel_user);
       $check_user = mysqli_num_rows($run_user);
-      $level_of_access = $_POST['access'];
+      if (isset($_POST['access'])){
+        $level_of_access = $_POST['access'];
+      }
       $priv = -1;
       if($level_of_access == 'renter') {
         $priv = 1;

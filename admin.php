@@ -6,10 +6,9 @@
     session_destroy();
     exit;
   }
-?>
-<?php if($_SESSION['logon']==3) {
-  include "header.php";
-  }
+  if($_SESSION['logon']==3) {
+    include "header.php";
+    }
 ?>
 <html>
 <head>
@@ -42,19 +41,103 @@
 </ul>
 <div id="mapid"></div>
 <script>
-	var mymap = L.map('mapid').setView([41.9969199, -87.8266514], 15);
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-		maxZoom: 19,
-		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-		id: 'mapbox.streets'
-	}).addTo(mymap);
-  var marker = L.marker([41.9969199, -87.8266514]).addTo(mymap);
-  marker.bindPopup("<b>Hello there!</b><br>This is my house.").openPopup();
+
+var map = L.map('mapid', {
+minZoom: 1,
+maxZoom: 4,
+center: [0, 0],
+zoom: 0,
+crs: L.CRS.Simple
+});
+
+var w = 4096,
+  h = 3584,
+  url = 'Test.png';
+
+var southWest = map.unproject([0, h], map.getMaxZoom());
+var northEast = map.unproject([w, 0], map.getMaxZoom());
+var bounds = new L.LatLngBounds(southWest, northEast);
+map.setMaxBounds(bounds);
+L.tileLayer('/Jock_Lot_Map/{z}/{x}/{y}.png').addTo(map);
+
+var square_coords = [ [0,0],
+                    [0,0],
+                    [0,0],
+                    [0,0]
+                    ];
+var spaces = [];
+var index = 1;
+var row_change_type = 0; //0 means no change, 1 means skipping a row, 2 means working within a double down_row, 3 within a double up_row
+var up_or_down = 1; //1 means you're in a down row, -1 means up row
+var alteration = [0, 30, -3, 27.75 ];
+var row = 1;
+var spot_num = 1;
+
+for(c = 43; row < 6; c=c+33.5)
+{
+  for(s = -10.25 + up_or_down * alteration[row_change_type]; spot_num < 12; s = s-15.1)
+  {
+    var spot = {
+        "type": "Feature",
+        "properties": {
+            "occupied": "False",
+            "popupContent": "This is a dank spot"
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+                [c, s],
+                [c+ 30.5, s + (up_or_down * -16)],
+                [c+ 30.5, s + (up_or_down * -27.75)],
+                [c, s + (up_or_down * -11.5)],
+                [c, s]
+            ]]
+        },
+        "id": index
+    };
+
+    spaces.push(spot);
+
+    L.geoJSON(spot, {
+        style: function(feature) {
+            switch (feature.properties.occupied) {
+                case 'True': return {color: "#ff0000"};
+                case 'False':   return {color: "#0000ff"};
+            }
+        }
+    }).addTo(map);
+
+    spot_num += 1;
+  }
+  spot_num = 1;
+    switch(row%2){
+      case 1:
+        switch(up_or_down){
+          case 1:
+            row_change_type = 2;
+            break;
+          case -1:
+            row_change_type = 3;
+          break;
+        }
+      break;
+      case 0:
+        row_change_type = 1;
+        up_or_down *= -1;
+        c+= 20.8;
+      break;
+    }
+    row = row + 1;
+}
+
+function onMapClick(e) {
+    alert("You clicked the map at " + e.latlng);
+}
+
+map.on('click', onMapClick);
+
+
 </script>
-
-
 <?php endif; ?>
 
 </body>
