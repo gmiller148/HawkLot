@@ -30,6 +30,10 @@ if(!isset($_SESSION['logon']))
   #login-dp .help-block{
       font-size:12px
   }
+  #login-dp .login-fail{
+    font-size:11px;
+    color:#ed0000;
+  }
   #login-dp .bottom{
       background-color:rgba(255,255,255,.8);
       border-top:1px solid #ddd;
@@ -120,13 +124,20 @@ if(!isset($_SESSION['logon']))
   											 <label class="sr-only" for="exampleInputPassword2">Password</label>
   											 <input type="password" name="pass" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
                         <div class="help-block text-right"><a href="">Forget the password ?</a></div>
+                        
+                        <?php if(isset($_GET['src'])) : ?>
+                        <?php if($_GET['src'] == 'login_fail') : ?>
+                          <div class="login-fail text-center">Email or Password was not correct, please try again</div>
+                          <?php unset($_GET['src']); ?>
+                        <?php endif; ?>
+                        <?php endif; ?>
   										</div>
   										<div class="form-group">
   											 <button class="btn btn-primary btn-block" type="submit" action="login.php" name="login">Sign In</button>
   										</div>
   										<div class="checkbox">
   											 <label>
-  											 <input type="checkbox"> Remember me
+  											 <input type="checkbox"> Remember me</input>
   											 </label>
   										</div>
   								 </form>
