@@ -1,182 +1,279 @@
+<!DOCTYPE html>
+<?php include "header.php"; ?>
 <html>
-<head>
-<style>
+  <head>
+		<title>Register</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <style>
+    body, html{
+         height: 100%;
+     	background-repeat: no-repeat;
 
-    .funkyradio label {
-     width: 100%;
-     border-radius: 3px;
-     border: 1px solid #D1D3D4;
-     font-weight: normal;
+
+     	background-color: #d3d3d3;
     }
-    .funkyradio input[type="radio"]:empty,
-    .funkyradio input[type="checkbox"]:empty {
-     display: none;
+
+    h1.title {
+    	font-size: 50px;
+    	font-weight: 400;
     }
-    .funkyradio input[type="radio"]:empty ~ label,
-    .funkyradio input[type="checkbox"]:empty ~ label {
-     position: relative;
-     line-height: 2.5em;
-     text-indent: 3.25em;
-     margin-top: 2em;
-     cursor: pointer;
-     -webkit-user-select: none;
-        -moz-user-select: none;
-         -ms-user-select: none;
-             user-select: none;
+
+    hr{
+    	width: 10%;
+    	color: #fff;
     }
-    .funkyradio input[type="radio"]:empty ~ label:before,
-    .funkyradio input[type="checkbox"]:empty ~ label:before {
-     position: absolute;
-     display: block;
-     top: 0;
-     bottom: 0;
-     left: 0;
-     content: '';
-     width: 2.5em;
-     background: #D1D3D4;
-     border-radius: 3px 0 0 3px;
+
+    .form-group{
+    	margin-bottom: 15px;
     }
-    .funkyradio input[type="radio"]:hover:not(:checked) ~ label,
-    .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
-     color: #888;
+
+    label{
+    	margin-bottom: 15px;
     }
-    .funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
-    .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
-     content: '\2714';
-     text-indent: .9em;
-     color: #C2C2C2;
+
+    input,
+    input::-webkit-input-placeholder {
+        font-size: 11px;
+        padding-top: 3px;
     }
-    .funkyradio input[type="radio"]:checked ~ label,
-    .funkyradio input[type="checkbox"]:checked ~ label {
-     color: #777;
+
+    .main-login{
+     	background-color: #fff;
+        /* shadows and rounded borders */
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+
     }
-    .funkyradio input[type="radio"]:checked ~ label:before,
-    .funkyradio input[type="checkbox"]:checked ~ label:before {
-     content: '\2714';
-     text-indent: .9em;
-     color: #333;
-     background-color: #ccc;
+
+    .main-center{
+     	margin-top: 30px;
+     	margin: 0 auto;
+     	max-width: 330px;
+        padding: 30px 30px;
+
     }
-    .funkyradio input[type="radio"]:focus ~ label:before,
-    .funkyradio input[type="checkbox"]:focus ~ label:before {
-     box-shadow: 0 0 0 3px #999;
+
+    .login-button{
+    	margin-top: 5px;
     }
-    .funkyradio-default input[type="radio"]:checked ~ label:before,
-    .funkyradio-default input[type="checkbox"]:checked ~ label:before {
-     color: #333;
-     background-color: #ccc;
+
+    .login-register{
+    	font-size: 11px;
+    	text-align: center;
     }
-    .funkyradio-primary input[type="radio"]:checked ~ label:before,
-    .funkyradio-primary input[type="checkbox"]:checked ~ label:before {
-     color: #fff;
-     background-color: #337ab7;
-    }
-    .funkyradio-success input[type="radio"]:checked ~ label:before,
-    .funkyradio-success input[type="checkbox"]:checked ~ label:before {
-     color: #fff;
-     background-color: #5cb85c;
-    }
-    .funkyradio-danger input[type="radio"]:checked ~ label:before,
-    .funkyradio-danger input[type="checkbox"]:checked ~ label:before {
-     color: #fff;
-     background-color: #d9534f;
-    }
-    .funkyradio-warning input[type="radio"]:checked ~ label:before,
-    .funkyradio-warning input[type="checkbox"]:checked ~ label:before {
-     color: #fff;
-     background-color: #f0ad4e;
-    }
-    .funkyradio-info input[type="radio"]:checked ~ label:before,
-    .funkyradio-info input[type="checkbox"]:checked ~ label:before {
-     color: #fff;
-     background-color: #5bc0de;
-    }
-      </style>
-</head>
-<body>
-  <?php include "header.php"; ?>
-  <form action="register.php" method=POST>
-    <table width="500" align="center">
-      <tr align="right">
-        <td colspan=”3″>
-          <h2>User Register</h2>
-        </td>
-      </tr>
-      <tr>
-        <td align="right">
-          <b>Username:</b>
-        </td>
-        <td>
-          <input type="email" name="user" required="required">
-        </td>
-      </tr>
-      <tr>
-        <td align="right"><b>Password:</b></td>
-        <td><input type="password" name="pass" required="required"></td>
-        <td align="right"><b>Password Again:</b></td>
-        <td><input type="password" name="pass_check" required="required"></td>
-      </tr>
-      <tr>
-        <td colspan="3" align="left">
-          <div class="funkyradio">
-            <div class="funkyradio-primary">
-              <input type="radio" name="radio" id="radio1" value="renter" checked/>
-              <label for="radio1">I want to rent spots.</label>
+
+    @import('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.0/css/bootstrap.min.css')
+      .funkyradio div {
+       clear: both;
+       overflow: hidden;
+      }
+      .funkyradio label {
+       width: 100%;
+       border-radius: 3px;
+       border: 1px solid #D1D3D4;
+       font-weight: normal;
+      }
+      .funkyradio input[type="radio"]:empty,
+      .funkyradio input[type="checkbox"]:empty {
+       display: none;
+      }
+      .funkyradio input[type="radio"]:empty ~ label,
+      .funkyradio input[type="checkbox"]:empty ~ label {
+       position: relative;
+       line-height: 2.5em;
+       text-indent: 3.25em;
+       cursor: pointer;
+       -webkit-user-select: none;
+          -moz-user-select: none;
+           -ms-user-select: none;
+               user-select: none;
+      }
+      .funkyradio input[type="radio"]:empty ~ label:before,
+      .funkyradio input[type="checkbox"]:empty ~ label:before {
+       position: absolute;
+       display: block;
+       top: 0;
+       bottom: 0;
+       left: 0;
+       content: '';
+       width: 2.5em;
+       background: #D1D3D4;
+       border-radius: 3px 0 0 3px;
+      }
+      .funkyradio input[type="radio"]:hover:not(:checked) ~ label,
+      .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
+       color: #888;
+      }
+      .funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
+      .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
+       content: '\2714';
+       text-indent: .9em;
+       color: #C2C2C2;
+      }
+      .funkyradio input[type="radio"]:checked ~ label,
+      .funkyradio input[type="checkbox"]:checked ~ label {
+       color: #777;
+      }
+      .funkyradio input[type="radio"]:checked ~ label:before,
+      .funkyradio input[type="checkbox"]:checked ~ label:before {
+       content: '\2714';
+       text-indent: .9em;
+       color: #333;
+       background-color: #ccc;
+      }
+      .funkyradio input[type="radio"]:focus ~ label:before,
+      .funkyradio input[type="checkbox"]:focus ~ label:before {
+       box-shadow: 0 0 0 3px #999;
+      }
+      .funkyradio-default input[type="radio"]:checked ~ label:before,
+      .funkyradio-default input[type="checkbox"]:checked ~ label:before {
+       color: #333;
+       background-color: #ccc;
+      }
+      .funkyradio-primary input[type="radio"]:checked ~ label:before,
+      .funkyradio-primary input[type="checkbox"]:checked ~ label:before {
+       color: #fff;
+       background-color: #337ab7;
+      }
+      .funkyradio-success input[type="radio"]:checked ~ label:before,
+      .funkyradio-success input[type="checkbox"]:checked ~ label:before {
+       color: #fff;
+       background-color: #5cb85c;
+      }
+      .funkyradio-danger input[type="radio"]:checked ~ label:before,
+      .funkyradio-danger input[type="checkbox"]:checked ~ label:before {
+       color: #fff;
+       background-color: #d9534f;
+      }
+      .funkyradio-warning input[type="radio"]:checked ~ label:before,
+      .funkyradio-warning input[type="checkbox"]:checked ~ label:before {
+       color: #fff;
+       background-color: #f0ad4e;
+      }
+      .funkyradio-info input[type="radio"]:checked ~ label:before,
+      .funkyradio-info input[type="checkbox"]:checked ~ label:before {
+       color: #fff;
+       background-color: #5bc0de;
+      }
+
+    </style>
+	</head>
+	<body style="background-attachment: fixed">
+		<div class="container">
+			<div class="row main">
+				<div class="panel-heading">
+	      </div>
+				<div class="main-login main-center">
+					<form class="form-horizontal" method="post" action="register.php">
+
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Your Name</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required="required"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="cols-sm-2 control-label">Your Email</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<input type="email" class="form-control" name="email" id="email"  placeholder="Enter your Email" required="required"/>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label for="password" class="cols-sm-2 control-label">Password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required="required"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password" required="required"/>
+								</div>
+							</div>
+						</div>
+            <div class="funkyradio">
+              <div class="funkyradio-primary">
+                <input type="radio" name="radio" id="radio1" value="renter" checked/>
+                <label for="radio1">I want to rent spots.</label>
+              </div>
+              <div class="funkyradio-primary">
+                <input type="radio" name="radio" id="radio2" value="owner"/>
+                <label for="radio2">I own a spot.</label>
+              </div>
             </div>
-            <div class="funkyradio-primary">
-              <input type="radio" name="radio" id="radio2" value="owner"/>
-              <label for="radio2">I own a spot.</label>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="3" align="center">
-          <input type="submit" name="register" value="Register">
-        </td>
-      </tr>
+						<div class="form-group ">
+							<button type="sumbit" name="register" class="btn btn-primary btn-lg btn-block login-button" action="login.php">Register</button>
+						</div>
 
-    </table>
+            <?php
+              include("dbconnect.php");
+              if(isset($_POST['register'])) {
 
-    <?php
-    include("dbconnect.php");
-    if(isset($_POST['register'])) {
-      $username = mysqli_real_escape_string($conn,$_POST['user']);
-      $pass = mysqli_real_escape_string($conn,$_POST['pass']);
-      $pass_check = $_POST['pass_check'];
-      if($pass != $pass_check) {
-        mysqli_close($conn);
-        exit;
-      }
-      $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
-      $sel_user = "SELECT * FROM users WHERE username='$username'";
-      $run_user = mysqli_query($conn, $sel_user);
-      $check_user = mysqli_num_rows($run_user);
-      if (isset($_POST['access'])){
-        $level_of_access = $_POST['access'];
-      }
-      $priv = -1;
-      if($level_of_access == 'renter') {
-        $priv = 1;
-      } else if($level_of_access == 'owner') {
-        $priv = 2;
-      }
-      if($check_user == 0) {
-        $new_user = "INSERT INTO users(username, pass, privelege) VALUES('$username', '$hashAndSalt', '$priv')";
-        $create_user = mysqli_query($conn, $new_user);
-        mysqli_close($conn);
-        echo "<script>alert('User was successfully created')</script>";
-        echo '<meta http-equiv="refresh" content="0;url=index.php">';
-        exit;
-      }
-      else {
-        echo "<script>alert('$username is already taken, try again')</script>";
-      }
-    }
-    mysqli_close($conn);
-    ?>
+                $name = mysqli_real_escape_string($conn, $_POST['name']);
+                $email = mysqli_real_escape_string($conn, $_POST['email']);
+                $pass = mysqli_real_escape_string($conn, $_POST['password']);
+                $confirm = mysqli_real_escape_string($conn, $_POST['confirm']);
+                if($pass != $confirm) {
+                  echo "<script>alert('Passwords don't match.')</script>";
+                  mysqli_close($conn);
+                  exit;
+                }
+                $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
+                $sel_user = "SELECT * FROM users WHERE username='$email'";
+                $run_user = mysqli_query($conn, $sel_user);
+                $check_user = mysqli_num_rows($run_user);
+                if (isset($_POST['radio'])){
+                  $level_of_access = $_POST['radio'];
+                  echo $level_of_access;
+                }
+                $priv = -1;
+                if($level_of_access == "renter") {
+                  $priv = 1;
+                }
+                if($level_of_access == "owner") {
+                  $priv = 2;
+                }
+                if($check_user == 0) {
+                  $new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
+                  $create_user = mysqli_query($conn, $new_user);
+                  mysqli_close($conn);
+                  echo "<script>alert('User was successfully created')</script>";
+                  echo '<meta http-equiv="refresh" content="0;url=index.php">';
+                  exit;
+                }
+                else {
+                  echo "<script>alert('$email is already taken, try again')</script>";
+                }
 
-  </form>
 
-</body>
+
+              }
+              ?>
+
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+	</body>
 </html>

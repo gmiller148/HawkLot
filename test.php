@@ -8,6 +8,8 @@
     body, html{
          height: 100%;
      	background-repeat: no-repeat;
+
+
      	background-color: #d3d3d3;
     }
 
@@ -51,7 +53,7 @@
      	margin-top: 30px;
      	margin: 0 auto;
      	max-width: 330px;
-        padding: 40px 40px;
+        padding: 30px 30px;
 
     }
 
@@ -160,13 +162,13 @@
 
     </style>
 	</head>
-	<body>
+	<body style="background-attachment: fixed">
 		<div class="container">
 			<div class="row main">
 				<div class="panel-heading">
 	      </div>
 				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="login.php">
+					<form class="form-horizontal" method="post" action="test.php">
 
 						<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Your Name</label>
@@ -183,20 +185,11 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email" required="required"/>
+									<input type="email" class="form-control" name="email" id="email"  placeholder="Enter your Email" required="required"/>
 								</div>
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label for="username" class="cols-sm-2 control-label">Username</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username" required="required"/>
-								</div>
-							</div>
-						</div>
 
 						<div class="form-group">
 							<label for="password" class="cols-sm-2 control-label">Password</label>
@@ -228,8 +221,54 @@
               </div>
             </div>
 						<div class="form-group ">
-							<button type="button" class="btn btn-primary btn-lg btn-block login-button" action="login.php">Register</button>
+							<button type="sumbit" name="register" class="btn btn-primary btn-lg btn-block login-button" action="login.php">Register</button>
 						</div>
+
+            <?php
+              include("dbconnect.php");
+              if(isset($_POST['register'])) {
+
+                $name = mysqli_real_escape_string($conn, $_POST['name']);
+                $email = mysqli_real_escape_string($conn, $_POST['email']);
+                $pass = mysqli_real_escape_string($conn, $_POST['password']);
+                $confirm = mysqli_real_escape_string($conn, $_POST['confirm']);
+                if($pass != $confirm) {
+                  echo "<script>alert('Passwords don't match.')</script>";
+                  mysqli_close($conn);
+                  exit;
+                }
+                $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
+                $sel_user = "SELECT * FROM users WHERE username='$email'";
+                $run_user = mysqli_query($conn, $sel_user);
+                $check_user = mysqli_num_rows($run_user);
+                if (isset($_POST['radio'])){
+                  $level_of_access = $_POST['radio'];
+                  echo $level_of_access;
+                }
+                $priv = -1;
+                if($level_of_access == "renter") {
+                  $priv = 1;
+                }
+                if($level_of_access == "owner") {
+                  $priv = 2;
+                }
+                if($check_user == 0) {
+                  $new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
+                  $create_user = mysqli_query($conn, $new_user);
+                  mysqli_close($conn);
+                  echo "<script>alert('User was successfully created')</script>";
+                  echo '<meta http-equiv="refresh" content="0;url=index.php">';
+                  exit;
+                }
+                else {
+                  echo "<script>alert('$email is already taken, try again')</script>";
+                }
+
+
+
+              }
+              ?>
+
 					</form>
 				</div>
 			</div>
