@@ -1,9 +1,25 @@
-<!DOCTYPE html>
-<?php include "header.php"; ?>
+
+<?php
+  session_start();
+  if($_SESSION['logon']<2) {
+    header("refresh:1; url=index.php");
+    echo "USER IS NOT LOGGED ON";
+    session_destroy();
+    exit;
+  }
+  if($_SESSION['logon']>=2) {
+    include "header.php";
+  }
+?>
+<!--Things to do:
+-Make and Model of the car into database
+-->
+
 <html>
   <head>
-		<title>Register</title>
+		<title>Register Your Spot</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css">
     <style>
     body, html{
          height: 100%;
@@ -162,56 +178,50 @@
 
     </style>
 	</head>
-	<body style="background-attachment: fixed">
+  <body style="background-attachment: fixed">
+  <?php if($_SESSION['logon'] >=2) : ?>
+
 		<div class="container">
 			<div class="row main">
 				<div class="panel-heading">
 	      </div>
 				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="register.php">
+					<form class="form-horizontal" method="post" action="register-spot.php">
+
 
 						<div class="form-group">
-							<label for="name" class="cols-sm-2 control-label">Your Name</label>
+							<label for="email" class="cols-sm-2 control-label">Spot Number</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required="required"/>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Your Email</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="email" class="form-control" name="email" id="email"  placeholder="Enter your Email" required="required"/>
+									<span class="input-group-addon"><i class="glyphicon glyphicon-chevron-right fa" aria-hidden="true"></i></span>
+									<input type="number" class="form-control" name="spotnumber" id="spotnumber"  placeholder="Enter your Spot Number" required="required"/>
 								</div>
 							</div>
 						</div>
 
 
 						<div class="form-group">
-							<label for="password" class="cols-sm-2 control-label">Password</label>
+							<label for="password" class="cols-sm-2 control-label">License Plate Number</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required="required"/>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password" required="required"/>
+									<span class="input-group-addon"><i class="glyphicon glyphicon-chevron-right fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="licenseplate" id="licenseplate"  placeholder="Enter your License Plate Number" required="required"/>
 								</div>
 							</div>
 						</div>
 
             <div class="form-group">
+							<label for="password" class="cols-sm-2 control-label">Confirm License Plate Number</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-chevron-right fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="confirm" id="confirm"  placeholder="Enter your License Plate Number again" required="required"/>
+								</div>
+							</div>
+						</div>
+
+            <div class="form-group">
+
 							<div class="cols-sm-10">
 								<div id="pwdWarning" align="center">
                   <br>
@@ -219,16 +229,6 @@
 							</div>
 						</div>
 
-            <div class="funkyradio">
-              <div class="funkyradio-primary">
-                <input type="radio" name="radio" id="radio1" value="renter" checked/>
-                <label for="radio1">I want to rent spots.</label>
-              </div>
-              <div class="funkyradio-primary">
-                <input type="radio" name="radio" id="radio2" value="owner"/>
-                <label for="radio2">I own a spot.</label>
-              </div>
-            </div>
 						<div class="form-group ">
 							<button type="sumbit" name="register" id="submit" class="btn btn-primary btn-lg btn-block login-button" action="login.php">Register</button>
 						</div>
@@ -237,57 +237,71 @@
               include("dbconnect.php");
               if(isset($_POST['register'])) {
 
-                $name = mysqli_real_escape_string($conn, $_POST['name']);
-                $email = mysqli_real_escape_string($conn, $_POST['email']);
-                $pass = mysqli_real_escape_string($conn, $_POST['password']);
+
+                $email = mysqli_real_escape_string($conn, $_SESSION['username']);
+                $spotnumber = mysqli_real_escape_string($conn, $_POST['spotnumber']);
+                $licenseplate = mysqli_real_escape_string($conn, $_POST['licenseplate']);
                 $confirm = mysqli_real_escape_string($conn, $_POST['confirm']);
-                if($pass != $confirm) {
-                  echo "<script>alert('Passwords don't match.')</script>";
+
+                if($licenseplate != $confirm) {
+
                   mysqli_close($conn);
                   exit;
                 }
-                $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
+
+
                 $sel_user = "SELECT * FROM users WHERE username='$email'";
                 $run_user = mysqli_query($conn, $sel_user);
                 $check_user = mysqli_num_rows($run_user);
-                if (isset($_POST['radio'])){
-                  $level_of_access = $_POST['radio'];
-                  echo $level_of_access;
+
+                $get_id = "SELECT id FROM users WHERE username='$email'";
+                $run_id = mysqli_query($conn, $get_id);
+                $id = -1;
+
+
+                if (mysqli_num_rows($run_id) > 0) {
+    // output data of each row
+                  while($row = mysqli_fetch_assoc($run_id)) {
+                    $id = $row["id"];
+                    echo "<script>alert('You're name or email is incorrect)</script>";
+                  }
                 }
-                $priv = -1;
-                if($level_of_access == "renter") {
-                  $priv = 1;
-                }
-                if($level_of_access == "owner") {
-                  $priv = 2;
-                }
+
+
+
+
                 if($check_user == 0) {
-                  $new_user = "INSERT INTO users(username, pass, privelege, name) VALUES('$email', '$hashAndSalt', '$priv', '$name')";
-                  $create_user = mysqli_query($conn, $new_user);
-                  mysqli_close($conn);
-                  echo "<script>alert('User was successfully created')</script>";
-                  echo '<meta http-equiv="refresh" content="0;url=index.php">';
-                  exit;
+                  echo "<script>alert('You're name or email is incorrect)</script>";
                 }
-                else {
-                  echo "<script>alert('$email is already taken, try again')</script>";
+                else if($check_user == 1) {
+                  echo "<script>alert('Nice Job')</script>";
+                  $query = "INSERT INTO owners(id, email, spotnumber,verified,licenseplate) VALUES('$id', '$email', '$spotnumber', '0', '$licenseplate')";
+                  $run_query = mysqli_query($conn, $query);
+
+                  #$new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
+                  #$create_user = mysqli_query($conn, $new_user);
+                  #mysqli_close($conn);
+                  #echo "<script>alert('User was successfully created')</script>";
+                  #echo '<meta http-equiv="refresh" content="0;url=index.php">';
+                  #exit;
+                } else {
+                  echo "<script>alert('ERROR! Please quit the site.')</script>";
                 }
 
 
 
               }
               ?>
-
               <script>
                 function checkPasswordMatch() {
-                  var password = $("#password").val();
+                  var password = $("#licenseplate").val();
                   var confirmPassword = $("#confirm").val();
 
                   if (password != confirmPassword) {
-                    $("#pwdWarning").html("Passwords do not match!").css('color', 'red');
+                    $("#pwdWarning").html("License plate numbers do not match!").css('color', 'red');
                      $("#submit").attr("disabled","disabled");
                   } else {
-                    $("#pwdWarning").html("¯&#92;_ツ_/¯").css('color', 'green');
+                    $("#pwdWarning").html("<br>").css('color', 'red');
                     $("#submit").removeAttr('disabled');
                   }
                 }
@@ -303,5 +317,8 @@
 		</div>
 
 		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+
+
+<?php endif;?>
 	</body>
 </html>
