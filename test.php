@@ -1,279 +1,274 @@
 <!DOCTYPE html>
-<?php include "header.php"; ?>
 <html>
   <head>
 		<title>Register</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <script src="/jquery/dist/jquery.js"></script>
+    <script src="/bootstrap/dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script>
+    $(document).ready(function() {
+    $('a[href="#navbar-more-show"], .navbar-more-overlay').on('click', function(event) {
+		event.preventDefault();
+		$('body').toggleClass('navbar-more-show');
+		if ($('body').hasClass('navbar-more-show'))	{
+			$('a[href="#navbar-more-show"]').closest('li').addClass('active');
+		}else{
+			$('a[href="#navbar-more-show"]').closest('li').removeClass('active');
+		}
+		return false;
+	});
+});
+    </script>
     <style>
-    body, html{
-         height: 100%;
-     	background-repeat: no-repeat;
+    @import url("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css");
 
+html, body {
+    height: 100%;
+}
+body {
+    padding-top: 75px;
+    background:url('tiles.png');
+}
+body.navbar-more-show  {
+	overflow: hidden;
+}
 
-     	background-color: #d3d3d3;
-    }
+.navbar {
+    height: calc(100%);
+	max-height: 300px;
+	-webkit-transform: translate(0px, calc(-100% + 69px));
+	transform: translate(0px, calc(-100% + 69px));
+}
+.navbar .container:not(.navbar-more) {
+    padding: 0px;
+}
+.navbar-more-overlay {
+	background-color: rgba(102, 102, 102, 0.55);
+	display: none;
+	height: 100%;
+	left: 0px;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 1029;
+}
+.navbar-more-show > .navbar-more-overlay {
+	display: block;
+}
+.navbar-more-show > .navbar {
+	-webkit-transform: translate(0px, 0px);
+	transform: translate(0px, 0px);
+}
+.navbar-nav.mobile-bar {
+	list-style: none;
+	-ms-box-orient: horizontal;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -moz-flex;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: space-around;
+	justify-content: space-around;
+	-webkit-flex-flow: row wrap;
+	flex-flow: row wrap;
+	-webkit-align-items: stretch;
+	align-items: stretch;
+	margin: 0px 0px;
+}
+.navbar-nav.mobile-bar > li {
+	-webkit-flex-grow: 1;
+	flex-grow: 1;
+	text-align: center;
+}
+.navbar-nav.mobile-bar > li > a > span.menu-icon {
+	display: block;
+	font-size: 1.8em;
+}
+.navbar-more {
+	background-color: rgb(255, 255, 255);
+	height: calc(100% - 69px);
+	overflow: auto;
+}
+.navbar-more .navbar-form {
+	border-width: 0px;
+}
+.navbar-more .navbar-nav > li > a {
+    color: rgb(64, 64, 64);
+}
+.navbar-more > .navbar-nav > li > a > span.menu-icon {
+	margin-left: 10px;
+	margin-right: 10px;
+}
 
-    h1.title {
-    	font-size: 50px;
-    	font-weight: 400;
-    }
-
-    hr{
-    	width: 10%;
-    	color: #fff;
-    }
-
-    .form-group{
-    	margin-bottom: 15px;
-    }
-
-    label{
-    	margin-bottom: 15px;
-    }
-
-    input,
-    input::-webkit-input-placeholder {
-        font-size: 11px;
-        padding-top: 3px;
-    }
-
-    .main-login{
-     	background-color: #fff;
-        /* shadows and rounded borders */
-        -moz-border-radius: 2px;
-        -webkit-border-radius: 2px;
-        border-radius: 2px;
-        -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-
-    }
-
-    .main-center{
-     	margin-top: 30px;
-     	margin: 0 auto;
-     	max-width: 330px;
-        padding: 30px 30px;
-
-    }
-
-    .login-button{
-    	margin-top: 5px;
-    }
-
-    .login-register{
-    	font-size: 11px;
-    	text-align: center;
-    }
-
-    @import('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.0/css/bootstrap.min.css')
-      .funkyradio div {
-       clear: both;
-       overflow: hidden;
-      }
-      .funkyradio label {
-       width: 100%;
-       border-radius: 3px;
-       border: 1px solid #D1D3D4;
-       font-weight: normal;
-      }
-      .funkyradio input[type="radio"]:empty,
-      .funkyradio input[type="checkbox"]:empty {
-       display: none;
-      }
-      .funkyradio input[type="radio"]:empty ~ label,
-      .funkyradio input[type="checkbox"]:empty ~ label {
-       position: relative;
-       line-height: 2.5em;
-       text-indent: 3.25em;
-       cursor: pointer;
-       -webkit-user-select: none;
-          -moz-user-select: none;
-           -ms-user-select: none;
-               user-select: none;
-      }
-      .funkyradio input[type="radio"]:empty ~ label:before,
-      .funkyradio input[type="checkbox"]:empty ~ label:before {
-       position: absolute;
-       display: block;
-       top: 0;
-       bottom: 0;
-       left: 0;
-       content: '';
-       width: 2.5em;
-       background: #D1D3D4;
-       border-radius: 3px 0 0 3px;
-      }
-      .funkyradio input[type="radio"]:hover:not(:checked) ~ label,
-      .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
-       color: #888;
-      }
-      .funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
-      .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
-       content: '\2714';
-       text-indent: .9em;
-       color: #C2C2C2;
-      }
-      .funkyradio input[type="radio"]:checked ~ label,
-      .funkyradio input[type="checkbox"]:checked ~ label {
-       color: #777;
-      }
-      .funkyradio input[type="radio"]:checked ~ label:before,
-      .funkyradio input[type="checkbox"]:checked ~ label:before {
-       content: '\2714';
-       text-indent: .9em;
-       color: #333;
-       background-color: #ccc;
-      }
-      .funkyradio input[type="radio"]:focus ~ label:before,
-      .funkyradio input[type="checkbox"]:focus ~ label:before {
-       box-shadow: 0 0 0 3px #999;
-      }
-      .funkyradio-default input[type="radio"]:checked ~ label:before,
-      .funkyradio-default input[type="checkbox"]:checked ~ label:before {
-       color: #333;
-       background-color: #ccc;
-      }
-      .funkyradio-primary input[type="radio"]:checked ~ label:before,
-      .funkyradio-primary input[type="checkbox"]:checked ~ label:before {
-       color: #fff;
-       background-color: #337ab7;
-      }
-      .funkyradio-success input[type="radio"]:checked ~ label:before,
-      .funkyradio-success input[type="checkbox"]:checked ~ label:before {
-       color: #fff;
-       background-color: #5cb85c;
-      }
-      .funkyradio-danger input[type="radio"]:checked ~ label:before,
-      .funkyradio-danger input[type="checkbox"]:checked ~ label:before {
-       color: #fff;
-       background-color: #d9534f;
-      }
-      .funkyradio-warning input[type="radio"]:checked ~ label:before,
-      .funkyradio-warning input[type="checkbox"]:checked ~ label:before {
-       color: #fff;
-       background-color: #f0ad4e;
-      }
-      .funkyradio-info input[type="radio"]:checked ~ label:before,
-      .funkyradio-info input[type="checkbox"]:checked ~ label:before {
-       color: #fff;
-       background-color: #5bc0de;
-      }
-
+@media (min-width: 768px) {
+	.navbar {
+    height: auto;
+		-webkit-transform: translate(0px, 0px);
+		transform: translate(0px, 0px);
+	}
+	.navbar-nav.mobile-bar {
+		display: block;
+		max-height: 64px;
+		margin: 0px -15px;
+	}
+	.navbar-nav.mobile-bar > li > a > span.menu-icon {
+		display: none;
+	}
+}
     </style>
 	</head>
-	<body style="background-attachment: fixed">
-		<div class="container">
-			<div class="row main">
-				<div class="panel-heading">
-	      </div>
-				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="test.php">
-
-						<div class="form-group">
-							<label for="name" class="cols-sm-2 control-label">Your Name</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required="required"/>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Your Email</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="email" class="form-control" name="email" id="email"  placeholder="Enter your Email" required="required"/>
-								</div>
-							</div>
-						</div>
-
-
-						<div class="form-group">
-							<label for="password" class="cols-sm-2 control-label">Password</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required="required"/>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password" required="required"/>
-								</div>
-							</div>
-						</div>
-            <div class="funkyradio">
-              <div class="funkyradio-primary">
-                <input type="radio" name="radio" id="radio1" value="renter" checked/>
-                <label for="radio1">I want to rent spots.</label>
-              </div>
-              <div class="funkyradio-primary">
-                <input type="radio" name="radio" id="radio2" value="owner"/>
-                <label for="radio2">I own a spot.</label>
-              </div>
-            </div>
-						<div class="form-group ">
-							<button type="sumbit" name="register" class="btn btn-primary btn-lg btn-block login-button" action="login.php">Register</button>
-						</div>
-
-            <?php
-              include("dbconnect.php");
-              if(isset($_POST['register'])) {
-
-                $name = mysqli_real_escape_string($conn, $_POST['name']);
-                $email = mysqli_real_escape_string($conn, $_POST['email']);
-                $pass = mysqli_real_escape_string($conn, $_POST['password']);
-                $confirm = mysqli_real_escape_string($conn, $_POST['confirm']);
-                if($pass != $confirm) {
-                  echo "<script>alert('Passwords don't match.')</script>";
-                  mysqli_close($conn);
-                  exit;
-                }
-                $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
-                $sel_user = "SELECT * FROM users WHERE username='$email'";
-                $run_user = mysqli_query($conn, $sel_user);
-                $check_user = mysqli_num_rows($run_user);
-                if (isset($_POST['radio'])){
-                  $level_of_access = $_POST['radio'];
-                  echo $level_of_access;
-                }
-                $priv = -1;
-                if($level_of_access == "renter") {
-                  $priv = 1;
-                }
-                if($level_of_access == "owner") {
-                  $priv = 2;
-                }
-                if($check_user == 0) {
-                  $new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
-                  $create_user = mysqli_query($conn, $new_user);
-                  mysqli_close($conn);
-                  echo "<script>alert('User was successfully created')</script>";
-                  echo '<meta http-equiv="refresh" content="0;url=index.php">';
-                  exit;
-                }
-                else {
-                  echo "<script>alert('$email is already taken, try again')</script>";
-                }
-
-
-
-              }
-              ?>
-
-					</form>
+	<body>
+    <div class="navbar-more-overlay"></div>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container navbar-more visible-xs">
+			<form class="navbar-form navbar-left" role="search">
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search for...">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit">Submit</button>
+						</span>
+					</div>
 				</div>
-			</div>
+			</form>
+			<ul class="nav navbar-nav">
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-picture-o"></span>
+						Photos
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-bell-o"></span>
+						Reservations
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-picture-o"></span>
+						Photos
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-bell-o"></span>
+						Reservations
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-picture-o"></span>
+						Photos
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-bell-o"></span>
+						Reservations
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-picture-o"></span>
+						Photos
+					</a>
+				</li>
+				<li>
+					<a href="#"><span class="menu-icon fa fa-bell-o"></span>Reservations</a>
+				</li>
+				<li>
+					<a href="#"><span class="menu-icon fa fa-picture-o"></span>Photos</a>
+				</li>
+				<li>
+					<a href="#"><span class="menu-icon fa fa-bell-o"></span>Reservations</a>
+				</li>
+				<li>
+					<a href=""><span class="menu-icon fa fa-picture-o"></span>Photos</a>
+				</li>
+				<li>
+					<a href=""><span class="menu-icon fa fa-bell-o"></span>Reservations</a>
+				</li>
+				<li>
+					<a href=""><span class="menu-icon fa fa-picture-o"></span>Photos</a>
+				</li>
+				<li>
+					<a href=""><span class="menu-icon fa fa-bell-o"></span>Reservations</a>
+				</li>
+			</ul>
 		</div>
+		<div class="container">
+			<div class="navbar-header hidden-xs">
+				<a class="navbar-brand" href="#">Brand</a>
+			</div>
 
-		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+			<ul class="nav navbar-nav navbar-right mobile-bar">
+				<li>
+					<a href="">
+						<span class="menu-icon fa fa-home"></span>
+						Home
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<span class="menu-icon fa fa-info"></span>
+						<span class="hidden-xs">About the Boat</span>
+						<span class="visible-xs">About</span>
+					</a>
+				</li>
+				<li class="hidden-xs">
+					<a href="#">
+						<span class="menu-icon fa fa-picture-o"></span>
+						Photos
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-ship"></span>
+						Cruises
+					</a>
+				</li>
+				<li class="hidden-xs">
+					<a href="#">
+						<span class="menu-icon fa fa-bell-o"></span>
+						Reservations
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="menu-icon fa fa-phone"></span>
+						<span class="hidden-xs">Contact Us</span>
+						<span class="visible-xs">Contact</span>
+					</a>
+				</li>
+				<li class="visible-xs">
+					<a href="#navbar-more-show">
+						<span class="menu-icon fa fa-bars"></span>
+						More
+					</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+    <section class="container">
+		<div class="col-xs-12 col-sm-12">
+			<p class="lead text-center">Inclusive capitalism shift donors revitalize celebrate; hack elevate Kony 2012 shifting landscape generosity. Emergent relief economic independence volunteer informal economies life-saving visionary, growth equality community immunize civic engagement. Crisis management forward-thinking, focus on impact giving, policy healthcare solve; cornerstone time of extraordinary change human experience making progress. Advocate catalyze, affordable health care, outcomes justice invest. Care; citizens of change compassion solution, gender equality accelerate social worker equity donation foster. Challenges of our times working alongside UNHCR Oxfam global health country enable medical impact achieve. Long-term, UNICEF beneficiaries honesty, meaningful work combat malaria, foundation; urban disrupt liberal catalyst effectiveness.</p>
+		</div>
+	</section>
+
+	<section class="container">
+		<div class="col-xs-12 col-sm-12">
+			<p class="lead text-center">Network working families, Aga Khan, collaborative consumption plumpy'nut end hunger poverty readiness legitimize proper resources social good humanitarian relief medical supplies. Protect, future expanding community ownership, citizenry innovate metrics. Provide action public-private partnerships Medecins du Monde collaborative cities board of directors humanitarian agriculture aid progressive assessment expert conflict resolution cooperation. Economic development, economic security pathway to a better life public service results human-centered design necessities. Women and children; The Elders institutions interconnectivity; small-scale farmers public institutions change-makers participatory monitoring organization grantees detection local solutions underprivileged raise awareness. Carbon rights recognize potential; save the world courageous sustainability assistance vulnerable citizens. Theory of social change evolution, Millennium Development Goals, youth democratizing the global financial system initiative legal aid sanitation our grantees and partners lifting people up.</p>
+		</div>
+	</section>
+
+	<section class="container">
+		<div class="col-xs-12 col-sm-12">
+			<p class="lead text-center">Cross-cultural, global leaders equal opportunity social, social movement insurmountable challenges breakthrough insights honor. Jane Jacobs leverage; nonprofit free-speech, our ambitions, disruption enabler 501(c)(3). Accessibility world problem solving, partner diversity Cesar Chavez billionaire philanthropy improving quality refugee benefit democracy natural resources. Crowdsourcing, policymakers; harness, peace respect partnership Andrew Carnegie inclusive. Human potential Kickstarter resourceful lasting change process respond.</p>
+		</div>
+	</section>
 	</body>
 </html>
