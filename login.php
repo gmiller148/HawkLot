@@ -27,8 +27,6 @@
         $usr_privlg = mysqli_query($conn, $usr_privlg_query);
         $row = mysqli_fetch_assoc($usr_privlg);
         $_SESSION['logon'] = $row['privelege'];
-      }else {
-        echo "<script>alert('Email or password is not correct, try again')</script>";
       }
     }
     mysqli_close($conn);
@@ -38,7 +36,7 @@
       $login_dest = 'admin.php';
       break;
     case 2:
-      $login_dest = 'renter.php';
+      $login_dest = 'owner.php';
       break;
     case 1:
       $login_dest = 'user.php';

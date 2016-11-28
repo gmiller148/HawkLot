@@ -19,6 +19,5 @@ else{
   exit;
 }
 ?>
-
 </body>
 </html>

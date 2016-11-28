@@ -6,11 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <style>
     body, html{
-         height: 100%;
-     	background-repeat: no-repeat;
-
-
-     	background-color: #d3d3d3;
+      height: 100%;
+     	background-repeat: repeat;
     }
 
     h1.title {
