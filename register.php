@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <style>
     body, html{
-      height: 100%;
      	background-repeat: repeat;
     }
 
@@ -178,11 +177,20 @@
 						</div>
 
 						<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Your Email</label>
+							<label for="email" class="cols-sm-2 control-label">Your s207 Email</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
 									<input type="email" class="form-control" name="email" id="email"  placeholder="Enter your Email" required="required"/>
+								</div>
+							</div>
+						</div>
+
+            <div class="form-group">
+
+							<div class="cols-sm-10">
+								<div id="emailWarning" align="center">
+
 								</div>
 							</div>
 						</div>
@@ -288,8 +296,25 @@
                     $("#submit").removeAttr('disabled');
                   }
                 }
+
+                  function checkEmail() {
+                    var email = $("#email").val();
+                    var index = email.indexOf("@");
+
+                    var check = email.substring(index);
+
+                    if (check != "@s207.org") {
+                      $("#emailWarning").html("Must be @s207.org").css('color', 'red');
+                       $("#submit").attr("disabled","disabled");
+                    } else {
+                      //$("#emailWarning").html("<br>").css('color', 'red');
+                      $("#submit").removeAttr('disabled');
+                    }
+                  }
+
                   $(document).ready(function () {
                     $("#confirm").keyup(checkPasswordMatch);
+                    $("#email").keyup(checkEmail);
                   });
 
               </script>
