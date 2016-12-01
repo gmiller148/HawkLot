@@ -111,10 +111,9 @@
                   echo "<script>alert('You're name or email is incorrect)</script>";
                 }
                 else if($check_user == 1) {
-                  echo "<script>alert('Nice Job')</script>";
                   $query = "INSERT INTO owners(id, email, spotnumber,verified,licenseplate) VALUES('$id', '$email', '$spotnumber', '0', '$licenseplate')";
                   $run_query = mysqli_query($conn, $query);
-
+                  echo '<meta http-equiv="refresh" content="0;url=owner.php">';
                   #$new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
                   #$create_user = mysqli_query($conn, $new_user);
                   #mysqli_close($conn);

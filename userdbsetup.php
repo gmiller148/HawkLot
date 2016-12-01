@@ -15,4 +15,24 @@ $run_alterTable0 = mysqli_query($conn, $alterTable0);
 $run_alterTable1 = mysqli_query($conn, $alterTable1);
 $run_alterTable2 = mysqli_query($conn, $alterTable2);
 $run_alterTable3 = mysqli_query($conn, $alterTable3);
+
+$createOwnerTable = "CREATE TABLE IF NOT EXISTS owners(
+  id int(11) NOT NULL PRIMARY KEY,
+  email text NOT NULL,
+  spotnumber int(11) NOT NULL,
+  verified boolean NOT NULL,
+  licenseplate text NOT NULL
+) ENGINE = MYISAM";
+$run_createOwnerTable = mysqli_query($conn, $createOwnerTable);
+
+
+$createRenterTable = "CREATE TABLE IF NOT EXISTS renters(
+  id int(11) NOT NULL PRIMARY KEY,
+  email text NOT NULL,
+  carmodel text NOT NULL,
+  carcolor text NOT NULL,
+  licenseplate text NOT NULL
+) ENGINE = MYISAM";
+$run_createRenterTable = mysqli_query($conn, $createRenterTable);
+
 ?>
