@@ -95,15 +95,17 @@
                 $run_user = mysqli_query($conn, $sel_user);
                 $check_user = mysqli_num_rows($run_user);
 
-                $get_id = "SELECT id FROM users WHERE username='$email'";
+                $get_id = "SELECT id,studentid FROM users WHERE username='$email'";
                 $run_id = mysqli_query($conn, $get_id);
                 $id = -1;
+                $studentid = -1;
+
 
                 if (mysqli_num_rows($run_id) > 0) {
     // output data of each row
                   while($row = mysqli_fetch_assoc($run_id)) {
                     $id = $row["id"];
-                    echo "<script>alert('You're name or email is incorrect)</script>";
+                    $studentid = $row["studentid"];
                   }
                 }
 
@@ -111,10 +113,9 @@
                   echo "<script>alert('You're name or email is incorrect)</script>";
                 }
                 else if($check_user == 1) {
-                  echo "<script>alert('Nice Job')</script>";
-                  $query = "INSERT INTO owners(id, email, spotnumber,verified,licenseplate) VALUES('$id', '$email', '$spotnumber', '0', '$licenseplate')";
+                  $query = "INSERT INTO owners(id, email, spotnumber,verified,licenseplate, studentid) VALUES('$id', '$email', '$spotnumber', '0', '$licenseplate', '$studentid')";
                   $run_query = mysqli_query($conn, $query);
-
+                  echo '<meta http-equiv="refresh" content="0;url=owner.php">';
                   #$new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
                   #$create_user = mysqli_query($conn, $new_user);
                   #mysqli_close($conn);
