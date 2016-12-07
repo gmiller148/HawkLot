@@ -186,11 +186,23 @@
 							</div>
 						</div>
 
+
+
             <div class="form-group">
 
 							<div class="cols-sm-10">
 								<div id="emailWarning" align="center">
 
+								</div>
+							</div>
+						</div>
+
+            <div class="form-group">
+							<label for="email" class="cols-sm-2 control-label">Student ID</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-chevron-right" aria-hidden="true"></i></span>
+									<input type="number" class="form-control" name="studentid" id="studentid"  placeholder="Enter your Student ID" required="required"/>
 								</div>
 							</div>
 						</div>
@@ -244,6 +256,7 @@
 
                 $name = mysqli_real_escape_string($conn, $_POST['name']);
                 $email = mysqli_real_escape_string($conn, $_POST['email']);
+                $studentid = mysqli_real_escape_string($conn, $_POST['studentid']);
                 $pass = mysqli_real_escape_string($conn, $_POST['password']);
                 $confirm = mysqli_real_escape_string($conn, $_POST['confirm']);
                 if($pass != $confirm) {
@@ -267,11 +280,10 @@
                   $priv = 2;
                 }
                 if($check_user == 0) {
-                  $new_user = "INSERT INTO users(username, pass, privelege, name) VALUES('$email', '$hashAndSalt', '$priv', '$name')";
+                  $new_user = "INSERT INTO users(username, pass, privelege, name, studentid) VALUES('$email', '$hashAndSalt', '$priv', '$name', '$studentid')";
                   $create_user = mysqli_query($conn, $new_user);
                   mysqli_close($conn);
-                  echo "<script>alert('User was successfully created')</script>";
-                  echo '<meta http-equiv="refresh" content="0;url=index.php">';
+                  echo '<meta http-equiv="refresh" content="0;url=login_page.php">';
                   exit;
                 }
                 else {
@@ -307,7 +319,7 @@
                       $("#emailWarning").html("Must be @s207.org").css('color', 'red');
                        $("#submit").attr("disabled","disabled");
                     } else {
-                      //$("#emailWarning").html("<br>").css('color', 'red');
+                      $("#emailWarning").html("<br>").css('color', 'red');
                       $("#submit").removeAttr('disabled');
                     }
                   }
