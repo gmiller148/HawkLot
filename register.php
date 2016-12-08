@@ -282,6 +282,8 @@
                 if($check_user == 0) {
                   $new_user = "INSERT INTO users(username, pass, privelege, name, studentid) VALUES('$email', '$hashAndSalt', '$priv', '$name', '$studentid')";
                   $create_user = mysqli_query($conn, $new_user);
+                  $event = "INSERT INTO mastertable(action, user, actiontime) VALUES('register', '$email', CURRENT_TIMESTAMP)";
+                  $run_event = mysqli_query($conn, $event);
                   mysqli_close($conn);
                   echo '<meta http-equiv="refresh" content="0;url=login_page.php">';
                   exit;

@@ -289,6 +289,8 @@
 
                   $query = "INSERT INTO renters(id, email, carmodel,carcolor,licenseplate, studentid) VALUES('$id', '$email', '$carmodel', '$carcolor', '$licenseplate', '$studentid')";
                   $run_query = mysqli_query($conn, $query);
+                  $event = "INSERT INTO mastertable(action, user, actiontime) VALUES('car_registered', '$email', CURRENT_TIMESTAMP)";
+                  $run_event = mysqli_query($conn, $event);
                   echo '<meta http-equiv="refresh" content="0;url=user.php">';
                   #$new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
                   #$create_user = mysqli_query($conn, $new_user);

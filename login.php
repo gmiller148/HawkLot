@@ -27,6 +27,9 @@
         $usr_privlg = mysqli_query($conn, $usr_privlg_query);
         $row = mysqli_fetch_assoc($usr_privlg);
         $_SESSION['logon'] = $row['privelege'];
+
+        $event = "INSERT INTO mastertable(action, user, actiontime) VALUES('login', '$username', CURRENT_TIMESTAMP)";
+        $run_event = mysqli_query($conn, $event);
       }
     }
     mysqli_close($conn);

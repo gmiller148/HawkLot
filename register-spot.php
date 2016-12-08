@@ -115,6 +115,8 @@
                 else if($check_user == 1) {
                   $query = "INSERT INTO owners(id, email, spotnumber,verified,licenseplate, studentid) VALUES('$id', '$email', '$spotnumber', '0', '$licenseplate', '$studentid')";
                   $run_query = mysqli_query($conn, $query);
+                  $event = "INSERT INTO mastertable(action, user, actiontime) VALUES('spot_registered', '$email', CURRENT_TIMESTAMP)";
+                  $run_event = mysqli_query($conn, $event);
                   echo '<meta http-equiv="refresh" content="0;url=owner.php">';
                   #$new_user = "INSERT INTO users(username, pass, privelege) VALUES('$email', '$hashAndSalt', '$priv')";
                   #$create_user = mysqli_query($conn, $new_user);
