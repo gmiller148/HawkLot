@@ -28,6 +28,14 @@ $run_createOwnerTable = mysqli_query($conn, $createOwnerTable);
 $alterTable4 = "ALTER TABLE owners ADD COLUMN studentid int(11) NOT NULL";
 $run_alterTable4 = mysqli_query($conn, $alterTable4);
 
+$createBugTable = "CREATE TABLE IF NOT EXISTS bugs (
+  id int(11) NOT NULL PRIMARY KEY,
+  issue text NOT NULL,
+  currtime TIMESTAMP NOT NULL
+) ENGINE = MYISAM";
+$run_createBugTable = mysqli_query($conn, $createBugTable);
+
+
 
 $createRenterTable = "CREATE TABLE IF NOT EXISTS renters(
   id int(11) NOT NULL PRIMARY KEY,
@@ -46,7 +54,7 @@ $createSpotsTable = "CREATE TABLE IF NOT EXISTS dailyparking(
   available tinyint(2) NOT NULL,
   owner text NOT NULL
 ) ENGINE = MYISAM";
-$run_createSpotsTable = mysqli_query($conn, $createRenterTable);
+$run_createSpotsTable = mysqli_query($conn, $createSpotsTable);
 
 
 $createMasterTable = "CREATE TABLE IF NOT EXISTS mastertable(
@@ -59,9 +67,9 @@ $createMasterTable = "CREATE TABLE IF NOT EXISTS mastertable(
 $run_createMasterTable = mysqli_query($conn, $createMasterTable);
 
 $createEventScheduler = "
-CREATE EVENT IF NOT EXISTS reset_dailyparking
+CREATE EVENT IF NOT EXISTS reset_spots
 ON SCHEDULE EVERY 1 DAY
-  STARTS '2016-12-07 09:25:00'
+  STARTS '2016-12-09 21:25:00'
   ENDS '2038-1-18 00:00:00'
 DO DELETE FROM dailyparking;";
 $run_eventScheduler = mysqli_query($conn, $createEventScheduler);
@@ -70,7 +78,6 @@ $run_eventScheduler = mysqli_query($conn, $createEventScheduler);
 //what to do.. what to do..
 /*
 Fix the mastertable in register-renter and register-spot
-Jim jim@s207.org cannot go to register-renter
 
 */
 ?>
