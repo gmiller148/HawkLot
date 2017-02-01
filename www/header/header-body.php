@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
 
       </button>
-      <p class="navbar-text" id="testing">HawkLot</p>
+      <a class="navbar-brand" href="index.php"><img alt="Hawklot" src="headerhl.png" style="height:20px;"></a>
     </div>
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
       <ul class="nav navbar-nav">
@@ -42,12 +42,6 @@
                        <label class="sr-only" for="InputPassword">Password</label>
                        <input type="password" name="password" class="form-control" id="InputPassword" placeholder="Password" required>
                       <div class="help-block text-right"><a href="">Forgot your password?</a></div>
-                      <?php if(isset($_GET['src'])) : ?>
-                      <?php if($_GET['src'] == 'login_fail') : ?>
-                        <div class="login-fail text-center">Email or Password was not correct, please try again</div>
-                        <?php unset($_GET['src']); ?>
-                      <?php endif; ?>
-                      <?php endif; ?>
                     </div>
                     <div class="form-group">
                        <button class="btn btn-primary btn-block" type="submit" action="login.php" name="login_HEADER">Sign In</button>
@@ -63,6 +57,7 @@
     <?php endif; ?>
     <?php if($_SESSION['logon'] >= 1) : ?>
       <ul class="nav navbar-nav navbar-right">
+
         <li>
           <a href="reroute.php?logout=true"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
         </li>
