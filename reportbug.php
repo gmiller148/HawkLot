@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<?php include "header/header-control.php"; ?>
+<html lang="en">
 <head>
     <title>HawkLot</title>
+    <?php include "header/header-head.php"; ?>
     <style>
     #bug {
       height:50px;
@@ -11,11 +12,11 @@
     </style>
 </head>
 <body>
-  <?php include "header.php"; ?>
+  <?php include "header/header-body.php"; ?>
   <div class="container" align="center">
     <form method="post" action="reportbug.php">
     <h1>Enter your bug</h1>
-    <input id="bug" name="bug" type="textarea" value="Please enter the bug you discovered" rows="5" cols="100">
+    <input id="bug" name="bug" type="textarea" placeholder="Please enter the bug you discovered" rows="5" cols="100">
     </input>
 
 
@@ -33,7 +34,6 @@
           if (!$runquery) {
             die('Invalid query: ' . mysql_error());
           }
-
           mysqli_close($conn);
           echo '<meta http-equiv="refresh" content="0;url=index.php">';
           exit;

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<?php include "header.php"; ?>
+<?php include "/header/header-control.php"; ?>
 <html>
   <head>
-		<title>Register</title>
+		<title>HawkLot-Register</title>
+    <?php include "/header/header-head.php"; ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <style>
     body, html{
@@ -155,10 +156,14 @@
        color: #fff;
        background-color: #5bc0de;
       }
+      .spot_owned{
+        color:#ff0000;
+      }
 
     </style>
 	</head>
 	<body style="background-attachment: fixed">
+    <?php include "/header/header-body.php"; ?>
 		<div class="container">
 			<div class="row main">
 				<div class="panel-heading">
@@ -177,7 +182,7 @@
 						</div>
 
 						<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Your s207 Email</label>
+							<label for="email" class="cols-sm-2 control-label">Your School Email</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
@@ -259,18 +264,13 @@
                 $studentid = mysqli_real_escape_string($conn, $_POST['studentid']);
                 $pass = mysqli_real_escape_string($conn, $_POST['password']);
                 $confirm = mysqli_real_escape_string($conn, $_POST['confirm']);
-                if($pass != $confirm) {
-                  echo "<script>alert('Passwords don't match.')</script>";
-                  mysqli_close($conn);
-                  exit;
-                }
+
                 $hashAndSalt = password_hash($pass, PASSWORD_BCRYPT);
                 $sel_user = "SELECT * FROM users WHERE username='$email'";
                 $run_user = mysqli_query($conn, $sel_user);
                 $check_user = mysqli_num_rows($run_user);
                 if (isset($_POST['radio'])){
                   $level_of_access = $_POST['radio'];
-                  echo $level_of_access;
                 }
                 $priv = -1;
                 if($level_of_access == "renter") {
@@ -280,16 +280,20 @@
                   $priv = 2;
                 }
                 if($check_user == 0) {
-                  $new_user = "INSERT INTO users(username, pass, privelege, name, studentid) VALUES('$email', '$hashAndSalt', '$priv', '$name', '$studentid')";
+                  $new_user = "INSERT INTO users(username, pass, privelege, name, studentid, moneys) VALUES('$email', '$hashAndSalt', '$priv', '$name', '$studentid','10')";
                   $create_user = mysqli_query($conn, $new_user);
                   $event = "INSERT INTO mastertable(action, user, actiontime) VALUES('register', '$email', CURRENT_TIMESTAMP)";
                   $run_event = mysqli_query($conn, $event);
                   mysqli_close($conn);
-                  echo '<meta http-equiv="refresh" content="0;url=login_page.php">';
+                  if($priv==1){
+                    echo '<meta http-equiv="refresh" content="0;url=login_page.php?src=new_user">';
+                  }elseif($priv==2){
+                    echo '<meta http-equiv="refresh" content="0;url=login_page.php?src=new_user">';
+                  }
                   exit;
                 }
                 else {
-                  echo "<script>alert('$email is already taken, try again')</script>";
+                  echo '<div class="spot_owned">'.$email.' is already taken, try again</div>';
                 }
 
 
@@ -331,13 +335,30 @@
                     $("#email").keyup(checkEmail);
                   });
 
+                  $('form').submit(function(){
+                    var required = $('[required="required"]',this);
+                    var error = false;
+
+                    for(var i = 0; i <= (required.length - 1);i++)
+                    {
+                      if(required[i].value == '')
+                      {
+                        required[i].style.backgroundColor = 'rgb(255,155,155)';
+                        error = true;
+                      }
+                    }
+                    if(error)
+                    {
+                      return false;
+                    }
+                    });
+
+
               </script>
 
 					</form>
 				</div>
 			</div>
 		</div>
-
-		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
 	</body>
 </html>

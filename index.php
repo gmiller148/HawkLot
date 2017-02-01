@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<?php
+  include "/header/header-control.php";
+?>
+<html lang="en">
 <head>
     <title>HawkLot</title>
+    <?php
+      include "/header/header-head.php";
+    ?>
 </head>
 <body>
-  <?php include "header.php"; ?>
+  <?php include "/header/header-body.php"; ?>
   <div class="container">
   <h1>HawkLot</h1>
   <p>A parking-space sharing service.</p>
@@ -13,6 +18,5 @@
   <a href="register.php" class="btn btn-default" role="button">Sign Up!</a>
   <br><br><br><br><br><br><p align="center">©2016 Inflatus Games</p>
   </div>
-
 </body>
 </html>

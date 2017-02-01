@@ -4,10 +4,37 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
   <script src="js/realtime.js"></script>
+  <script src="/jquery/dist/jquery.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <style>
   #map {
     width: 100%; height: 100%;
   }
+
+  .leaflet-verticalcenter {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding-top: 10px;
+  }
+
+  .leaflet-verticalcenter .leaflet-control {
+      margin-bottom: 10px;
+  }
+
+  .spotInfo {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white; background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+  }
+  .spotInfo h4 {
+     margin: 0 0 5px;
+     color: #777;
+   }
+
   </style>
 </head>
 <body>
@@ -30,143 +57,116 @@ var northEast = map.unproject([w, 0], map.getMaxZoom());
 var bounds = new L.LatLngBounds(southWest, northEast);
 
 map.setMaxBounds(bounds);
-L.tileLayer('/Jock_Lot_Map/{z}/{x}/{y}.png').addTo(map);
+L.tileLayer('/Jock_Lot_Map/{z}/{x}/{y}.png').addTo(map).bringToBack();
 
-var spaces = [];
-var popups = [];
-var row_index = 1;
-var row_change_type = 0; //0 means no change, 1 means skipping a row, 2 means working within a double down_row, 3 within a double up_row
-var up_or_down = 1; //1 means you're in a down row, -1 means up row
-var alteration = [0, 30, -2.75, 27.75 ];
-var row = 1;
-var spot_num = 511;
+var clickListner = false;
+var clickLocation = 000;
 
-function edit_mePOPUP(spot_index){
-  occupancy_status = spaces[spot_index].properties.occupied;
-  popups[spot_index].setContent('<button class="btn btn-primary" onclick="setOccupancyStatus(' + spot_index + ')">Set me to ' + !occupancy_status + '</button>');
-}
+function addControlPlaceholders(map) {
+  var corners = map._controlCorners,
+    l = 'leaflet-',
+    container = map._controlContainer;
 
-function setOccupancyStatus(spot_index){
-  spaces[spot_index].properties.occupied = !spaces[spot_index].properties.occupied;
-  alert(spaces[spot_index].properties.popupContent + ' and its occupancy status is now ' + spaces[spot_index].properties.occupied);
-
-  //set it in SQL database...
-}
-
-function zoomToFeature(e) {
-		map.fitBounds(e.target.getBounds());
-}
-
-function zoomOutFeature(e){
-  map.fitBounds(bounds);
-}
-
-function popupContenttoIndex(unaltered_index){
-  // indecies 0-10 normal, 11-21 opposite, 22-32 normal, 33-43 opposite, 44-54 normal
-  var altered_index = -1;
-  var test = [];
-  if( (unaltered_index > 10 && unaltered_index < 22) || (unaltered_index > 32 && unaltered_index < 44) ){
-    var set = Math.floor(unaltered_index / 11);
-    var spots_row = [];
-    for(i = 11*set; i< 11*(set+1); i +=1 ){
-      spots_row.push(i);
-    }
-    unaltered_index_Found = spots_row.indexOf(unaltered_index);
-    spots_row.reverse();
-    altered_index = spots_row[unaltered_index_Found];
-  }else{
-    altered_index = unaltered_index;
+  function createCorner(vSide, hSide) {
+    var className = l + vSide + ' ' + l + hSide;
+    corners[vSide + hSide] = L.DomUtil.create('div', className, container);
   }
-  return altered_index;
+    createCorner('verticalcenter', 'right');
+}
+addControlPlaceholders(map);
+
+function changeStatus(id,value){
+  alert('Spot number ' + id.toString() + ' is now ' + (!value).toString());
+  var val = !value; //when changing true->false, val will be false, and will be true when false->true
+  $.post("json_edit.php",{id: id, value: val});
+    return false;
+}
+
+var divIcon = L.divIcon({
+  html: "textToDisplay"
+});
+L.marker(new L.LatLng(0, 0), {icon: divIcon });
+
+var spotInfo = L.control();
+
+spotInfo.onAdd = function (map) {
+	this._div = L.DomUtil.create('div', 'spotInfo');
+	this.update();
+	return this._div;
+};
+
+spotInfo.update = function (properties,addon) {
+	this._div.innerHTML = (properties ?
+		'<h4>This is parking spot number ' + properties.id + '.</h4>' +
+    'Current occupation status is ' + properties.occupied + '<br><button onclick="changeStatus('+ properties.id + ',' + properties.occupied + ')">Set me to ' + (!properties.occupied).toString() + '</button>'
+		: '') + (addon ? addon : '');
+};
+
+spotInfo.addTo(map);
+//spotInfo.setPosition('verticalcenterright');
+
+function lockMap(){
+  map.zoomControl.disable();
+  map._handlers.forEach(function(handler) {
+    handler.disable();
+  });
+  document.getElementById('map').style.cursor='default';
+}
+function unlockMap(){
+  map.zoomControl.enable();
+  map._handlers.forEach(function(handler) {
+    handler.enable();
+  });
+  if (map.tap) map.tap.enable();
+  document.getElementById('map').style.cursor='grab';
+}
+
+function spotselectHandler(e) {
+  var layer = e.target;
+  clickLocation = layer.feature.properties.id;
+  map.fitBounds(e.target.getBounds());
+  clickListner = true;
+//lockMap();
+
+  if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+  	layer.bringToFront();
+  }
+  spotInfo.update(layer.feature.properties);
 }
 
 function onEachFeature(feature, layer) {
-  var popupContent = "";
-  var occupied_or_not = "";
-  var spot_index = popupContenttoIndex(feature.properties.id);
-  var edit_me_button = '<p><button class="btn btn-primary" onclick="edit_mePOPUP(' + spot_index + ')">Edit Me</button></p>';
   layer.on({
-  			click: zoomToFeature,
-  		});
-  if(feature.properties.occupied==false){
-    occupied_or_not = "not ";
-  }
-  if (feature.properties && feature.properties.popupContent) {
-    popupContent += "<p>" + feature.properties.popupContent + "</p>";
-  }
-  popupContent += "<p>This parking spot is " + occupied_or_not + "occupied</p>" + edit_me_button;
-
-  var popup = L.popup({
-    keepInView: true,
-    minWidth: 200
-  }).setLatLng([1000,0]).setContent(popupContent);
-  popups.push(popup);
-  layer.bindPopup(popup);
+    click: spotselectHandler
+  });
 }
 
 function style(feature) {
   switch (feature.properties.occupied) {
-     case true: return {color: "#ff0000"};
-     case false:   return {color: "#0000ff"};
-   }
+    case true: return {color: "#ff0000"};
+    case false:   return {color: "#0000ff"};
+  }
 }
 
-parking_spots_layer = L.geoJSON(false, {
-  style: style,
-  onEachFeature: onEachFeature
-}).addTo(map);
-
-var spot = {
-    "type": "Feature",
-    "properties": {
-        "occupied": false,
-        "popupContent": "This is spot number " + spot_num.toString()
-    },
-    "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-            [43, -10.5],
-            [30.5, -10.5 + -16],
-            [43+ 30.5, -10.5 + -27.75],
-            [43, -10.5 + -11.5],
-            [43, -10.5]
-        ]]
-    },
-    id: 1
-};
-realtime = L.realtime({
+var popupContent;
+var realtime = L.realtime({
         url: 'test.json',
         crossOrigin: true,
         type: 'json'
     }, {
         interval: 1 * 1000,
-        style: style,
-        onEachFeature: onEachFeature
-}).addTo(map);
+        onEachFeature: onEachFeature,
+        style: style
+    }).addTo(map);
 
 realtime.on('update', function(e) {
-  /*var popupContent = "";
-  var occupied_or_not = "";
-  var spot_index = popupContenttoIndex(feature.properties.id);
-  var edit_me_button = '<p><button class="btn btn-primary" onclick="edit_mePOPUP(' + spot_index + ')">Edit Me</button></p>';
-
-  if(feature.properties.occupied==false){
-    occupied_or_not = "not ";
+  if(clickListner){
+    var feature = e.features[clickLocation];
+    spotInfo.update(feature.properties);
   }
-  if (feature.properties && feature.properties.popupContent) {
-    popupContent += "<p>" + feature.properties.popupContent + "</p>";
-  }
-  popupContent += "<p>This parking spot is " + occupied_or_not + "occupied</p>" + edit_me_button;
 
-  var popup = L.popup({
-    keepInView: true,
-    minWidth: 200
-  }).setContent(popupContent);
-  layer.bindPopup(popup);*/ 
 });
 
+
 </script>
-
-
 </body>
 </html>

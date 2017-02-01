@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<?php include "header.php"; ?>
+<?php include "/header/header-control.php"; ?>
 <html>
   <head>
 		<title>Login</title>
+    <?php include "/header/header-head.php"; ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <style>
     body, html{
@@ -155,16 +155,25 @@
        color: #fff;
        background-color: #5bc0de;
       }
-
+      .new_user{
+      font-size:14px;
+      color:#18a210;
+      font-weight: bold;
+      }
+      .login_fail{
+        font-size:14px;
+        color:#ed0000;
+      }
     </style>
 	</head>
 	<body style="background-attachment: fixed">
+    <?php include "/header/header-body.php"; ?>
 		<div class="container">
 			<div class="row main">
 				<div class="panel-heading">
 	      </div>
 				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="login_page.php">
+					<form class="form-horizontal" method="post" action="login.php">
 
             <div class="form-group">
 							<h1 align="center">Login</h1>
@@ -189,64 +198,17 @@
 								</div>
 							</div>
 						</div>
-
-
-
-
-						<div class="form-group ">
-							<button type="sumbit" name="login" id="submit" class="btn btn-primary btn-lg btn-block login-button" action="login.php">Login</button>
+            <div class="form-group">
+              <?php if(isset($_GET['src'])) : ?>
+              <?php if($_GET['src'] == 'new_user') : ?>
+                <p class="new_user text-center">Thank you for signing up! Please log in to confirm your account.</p>
+              <?php endif; ?>
+              <?php if($_GET['src'] == 'login_fail') : ?>
+                <p class="login_fail text-center">Email or password was incorrect. Please try again</p>
+              <?php endif; ?>
+              <?php endif; ?>
+							<button type="sumbit" name="login_PAGE" id="submit" class="btn btn-primary btn-lg btn-block login-button" action="login.php">Login</button>
 						</div>
-
-            <?php
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-            if(!isset($_SESSION['logon']))
-            {
-              $_SESSION['logon'] = 0;
-            }
-            if(isset($_POST['login'])) {
-              include "userdbsetup.php";
-              $username = mysqli_real_escape_string($conn,$_POST['email']);
-              $pass = mysqli_real_escape_string($conn,$_POST['password']);
-              $sel_user_query = "SELECT * FROM users WHERE username='$username'";
-              $run_user = mysqli_query($conn, $sel_user_query);
-              $check_user = mysqli_num_rows($run_user);
-
-              if($check_user > 0) {
-                $row = mysqli_fetch_assoc($run_user);
-                $pw = $row['pass'];
-
-                if(password_verify($pass, $pw)) {
-                  $_SESSION['username'] = $username;
-                  $_SESSION['logon'] = $row['privelege'];
-                  $priv = $row['privelege'];
-                  
-                  switch($priv) {
-                    case 0:
-                      echo '<meta http-equiv="refresh" content="0;url=index.php">';
-                      break;
-                    case 1:
-                     echo '<meta http-equiv="refresh" content="0;url=user.php">';
-                     break;
-                    case 2:
-                      echo '<meta http-equiv="refresh" content="0;url=owner.php">';
-                      break;
-                    case 3:
-                      echo '<meta http-equiv="refresh" content="0;url=admin.php">';
-                      break;
-                    default:
-                      echo '<meta http-equiv="refresh" content="0;url=index.php">';
-                  }
-                }
-                else {
-                  echo '<meta http-equiv="refresh" content="0;url=index.php">';
-                }
-
-              }
-              mysqli_close($conn);
-          }
-            ?>
 
               <script>
                   function checkEmail() {
@@ -268,6 +230,25 @@
                     $("#confirm").keyup(checkPasswordMatch);
                     $("#email").keyup(checkEmail);
                   });
+
+                  $('form').submit(function(){
+                    var required = $('[required="required"]');
+                    var error = false;
+
+                    for(var i = 0; i <= (required.length - 1);i++)
+                    {
+                      if(required[i].value == '')
+                      {
+                        required[i].style.backgroundColor = 'rgb(255,155,155)';
+                        error = true;
+                      }
+                    }
+                    if(error)
+                    {
+                      return false;
+                    }
+                    });
+
 
               </script>
 
